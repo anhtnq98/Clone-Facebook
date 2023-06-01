@@ -1,0 +1,267 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.nav-container {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  display: flex !important;
+  justify-content: space-between !important;
+  z-index: 999;
+}
+
+.bootstrap-container {
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: 0px 2px 5px 0px rgba(178, 178, 178, 0.52);
+}
+
+.nav-container .circle-logo {
+  margin-left: 15px;
+  width: 45px;
+  cursor: pointer;
+}
+
+.nav-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-left i {
+  background-color: #eeeeeeb1;
+  padding: 15px;
+  margin: 0px 10px 0 10px;
+  border-radius: 50px;
+  color: #65676b;
+  font-size: 17px;
+}
+
+.bars {
+  display: none;
+}
+
+.bars i {
+  font-size: 29px;
+  color: #65676b;
+  background-color: transparent;
+}
+
+.nav-container .nav-middle {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-left: 175px;
+  margin-right: 25px;
+}
+
+.nav-container .nav-middle div:hover {
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.nav-container .nav-middle i {
+  font-size: 25px;
+  padding: 17px 50px 17px 50px;
+  /* border-bottom: 3.75px solid black; */
+}
+
+.nav-container .nav-middle .non-active {
+  border-bottom: 3.75px solid transparent;
+}
+
+.nav-container .nav-middle .non-active i {
+  color: #65676b;
+}
+
+.nav-container .nav-middle .active {
+  border-bottom: 3.75px solid #1b74e4;
+}
+
+.nav-container .nav-middle .active i {
+  color: #1b74e4;
+}
+
+.nav-container .nav-middle .active:hover {
+  background-color: #ffffff;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.right-icon {
+  margin: 5px;
+  border-radius: 50px;
+  background-color: #e4e6eb;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.right-icon:hover {
+  background-color: #dddddd;
+}
+
+.right-icon img {
+  width: 25px;
+}
+
+.right-avatar {
+  margin: 5px;
+  border-radius: 100%;
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+}
+
+.right-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ------------------------------------------------------------------------------------------->>>>>>>> */
+.search-board {
+  display: none;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: -11px 11px 27px 0px rgba(0, 0, 0, 0.49);
+}
+
+.search-board input {
+  outline: none;
+  padding-left: 18px;
+  background-color: #f1f1f1;
+  border: white 1px solid;
+  width: 285px;
+  border-radius: 35px;
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#search-back {
+  background-color: white;
+  cursor: pointer;
+}
+
+#search-back:hover {
+  background-color: #eeeeee;
+}
+
+.search-middle-container {
+  max-height: 80vh;
+  overflow-y: hidden;
+}
+
+.search-middle-container:hover {
+  overflow-y: scroll;
+}
+
+.search-middle {
+  padding: 15px 8px 10px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-recently {
+  font-size: larger;
+}
+
+.search-block {
+  padding: 8px 0 8px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.search-block:hover {
+  background-color: #e1e1e1;
+}
+
+.search-block-infor {
+  display: flex;
+  align-items: center;
+}
+
+.search-block-infor-avartar img {
+  border-radius: 50px;
+  width: 43px;
+}
+
+.search-edit {
+  color: #1b74e4;
+}
+
+#search-delete {
+  background-color: transparent;
+  padding: 7px 9px 7px 9px;
+}
+
+#search-delete:hover {
+  background-color: #cbcbcb;
+}
+
+.right-icon-nofication {
+  position: fixed;
+  top: 0.5%;
+  right: 90px;
+  color: white;
+  background-color: #e41e3f;
+  width: 22px;
+  text-align: center;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 1100px) {
+  .nav-container .nav-middle {
+    padding: 5px;
+  }
+  .nav-container .nav-middle i {
+    padding: 5px;
+  }
+
+  .nav-container .nav-middle {
+    display: none;
+  }
+
+  .bars {
+    display: block;
+  }
+
+  .bars i:hover {
+    background-color: #f0f0f0d8;
+    padding: 12px;
+    margin: 3px 0 3px 13px;
+    border-radius: 8px;
+  }
+
+  .bars i:active {
+    background-color: #e0e0e0d8;
+  }
+
+  .right-icon-nofication {
+    right: 12%;
+  }
+}
