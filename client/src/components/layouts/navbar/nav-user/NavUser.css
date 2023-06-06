@@ -1,0 +1,134 @@
+/* NAV-USER */
+
+.nav-user-container {
+  display: none;
+}
+
+.nav-user-container-active {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 15px;
+  top: 60px;
+  right: 35px;
+  width: 400px;
+  height: 500px;
+  position: absolute;
+  background-color: white;
+  box-shadow: 2px 2px 10px 2px rgba(178, 178, 178, 0.52);
+  overflow: auto;
+}
+
+.nav-user-avatar {
+  margin-top: 15px;
+  border-radius: 15px;
+  width: 360px;
+  height: 125px;
+  background-color: white;
+  box-shadow: 2px 2px 10px 2px rgba(178, 178, 178, 0.52);
+  padding: 5px;
+}
+
+.nav-user-avatar-small {
+  display: flex;
+  align-items: center;
+  padding: 9px 0px 9px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition-duration: 0.5s;
+}
+
+.nav-user-hr {
+  margin: 5px;
+  border: 1px solid grey;
+}
+
+.nav-user-avatar-small:hover {
+  transition-duration: 0.1s;
+  background-color: rgba(218, 218, 226, 0.519);
+}
+
+.nav-user-avatar-small:active {
+  background-color: rgba(191, 190, 196, 0.682);
+}
+
+.nav-user-avatar-small-img {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.nav-user-avatar-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav-user-name {
+  padding-left: 9px;
+  font-weight: 500;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.nav-user-all-pages {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  color: #1b74e4;
+  font-weight: 500;
+  transition-duration: 0.5s;
+}
+
+.nav-user-all-pages:hover {
+  transition-duration: 0.1s;
+  background-color: rgba(218, 218, 226, 0.466);
+}
+
+.nav-user-all-pages:active {
+  background-color: rgba(191, 190, 196, 0.682);
+}
+
+.nav-user-other {
+  width: 100%;
+  padding: 15px 10px 15px 10px;
+}
+
+.nav-user-settings {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  transition-duration: 0.5s;
+}
+
+.nav-user-settings:hover {
+  transition-duration: 0.1s;
+  background-color: rgba(218, 218, 226, 0.466);
+}
+
+.nav-user-settings:active {
+  background-color: rgba(191, 190, 196, 0.682);
+}
+
+.nav-user-settings i {
+  background-color: #d9dbe0;
+  border-radius: 100%;
+  padding: 10px;
+  font-size: 21px;
+  margin-right: 15px;
+}
+
+.nav-user-settings-text {
+  font-weight: 500;
+  font-size: 15.5px;
+}
+
+.nav-user-footer {
+  padding: 10px;
+  font-size: 13.5px;
+  color: rgb(91, 90, 90);
+}

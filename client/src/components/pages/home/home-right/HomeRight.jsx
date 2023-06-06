@@ -1,4 +1,5 @@
 import React from "react";
+import "./HomeRight.css";
 
 function HomeRight() {
   return (
@@ -13,7 +14,7 @@ function HomeRight() {
           <div className="friend-request-block">
             <div className="friend-request-avartar">
               <img
-                src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-6/346100009_1215681349092093_7103924998824843181_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=pFl0b0aP2hkAX8uiaWB&_nc_ht=scontent.fhan4-3.fna&oh=00_AfCH7nHUOh2uW32lYCnjGleFoaxlcHN7DXyesFfHdO5RrA&oe=647919A0"
+                src="https://upload.wikimedia.org/wikipedia/vi/thumb/5/56/Bia_truyen_Tho_bay_mau%2C_2022.webp/200px-Bia_truyen_Tho_bay_mau%2C_2022.webp.png"
                 alt=""
               />
             </div>

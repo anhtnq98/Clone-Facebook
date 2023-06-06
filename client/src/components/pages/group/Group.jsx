@@ -1,7 +1,13 @@
 import React from "react";
+import MyNavbar from "../../layouts/navbar/MyNavbar";
 
 function Group() {
-  return <div>Group</div>;
+  return (
+    <>
+      <MyNavbar />
+      <div>Group</div>
+    </>
+  );
 }
 
 export default Group;

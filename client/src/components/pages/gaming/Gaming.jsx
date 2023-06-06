@@ -1,7 +1,13 @@
 import React from "react";
+import MyNavbar from "../../layouts/navbar/MyNavbar";
 
 function Gaming() {
-  return <div>Gaming</div>;
+  return (
+    <>
+      <MyNavbar />
+      <div>Gaming</div>
+    </>
+  );
 }
 
 export default Gaming;

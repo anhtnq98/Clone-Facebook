@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { Link, NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Search from "./search/Search";
+import NavUser from "./nav-user/NavUser";
 
 function MyNavbar() {
-  //Trạng thái active của router
+  // Trạng thái active của router
   const navLinkClassName = ({ isActive }) =>
     isActive ? "active" : "non-active";
+
+  // Ẩn hiện Nav-user
+  const [navUserActive, setNavUserActive] = useState(false);
+  const [navUserActiveStyle, setNavUserActiveStyle] =
+    useState("nav-user-container");
+
+  const handleClick = () => {
+    if (navUserActive === false) {
+      setNavUserActive(true);
+      setNavUserActiveStyle("nav-user-container-active");
+      return;
+    } else {
+      setNavUserActive(false);
+      setNavUserActiveStyle("nav-user-container");
+      return;
+    }
+  };
 
   return (
     <div className="nav-container">
@@ -28,7 +46,7 @@ function MyNavbar() {
           {/* SEARCH END*/}
 
           <div className="bars">
-            <i class="fa-solid fa-bars"></i>
+            <i className="fa-solid fa-bars"></i>
           </div>
         </div>
 
@@ -70,14 +88,18 @@ function MyNavbar() {
             />
           </div>
           <div className="right-icon-nofication">5</div>
-
-          <div className="right-avatar">
+          {/* RIGHT AVATAR */}
+          <div onClick={handleClick} className="right-avatar">
             <img
               src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
               alt=""
             />
           </div>
+          {/* RIGHT AVATAR END*/}
         </div>
+        {/* NAV USER */}
+        <NavUser navUserActiveStyle={navUserActiveStyle} />
+        {/* NAV USER END*/}
       </Navbar>
     </div>
   );
