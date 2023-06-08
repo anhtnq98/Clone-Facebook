@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.user-main-container {
+  background-color: #cececd;
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,247 @@
+.user-main-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(to bottom, #bcbcbb 0%, #ffffff 56%, #ffffff 100%);
+  box-shadow: 0px 2px 5px 0px rgba(178, 178, 178, 0.52);
+}
+
+.bg-avatar {
+  width: 85%;
+  height: 385px;
+  border-radius: 10px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.bg-avatar-optional {
+  cursor: pointer;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.564);
+  width: 175px;
+  padding: 8px 3px;
+  margin: 3px 35px 3px 0;
+  border-radius: 5px;
+}
+
+.bg-avatar-optional:hover {
+  background-color: rgba(0, 0, 0, 0.59);
+}
+
+.user-main-avatar-info-container {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 12px 135px;
+}
+
+.user-main-avatar-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-main-avatar-info-left {
+  display: flex;
+  text-align: center;
+}
+
+.user-main-avatar {
+  overflow: hidden;
+  width: 195px;
+  height: 195px;
+  border-radius: 100%;
+  cursor: pointer;
+  background-color: black;
+  border: 5px solid white;
+}
+
+.user-main-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-main-avatar img:hover {
+  opacity: 85%;
+}
+
+.user-main-info {
+  padding: 0 20px;
+  text-align: left;
+}
+
+.user-main-info-name {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.user-main-info-nickname {
+  font-size: 30px;
+}
+
+.user-main-info-friend-quantity {
+  color: rgb(99, 99, 99);
+  font-size: 15.5px;
+  font-weight: 500;
+}
+
+.user-main-info-friend {
+  margin-top: 5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.user-main-info-friend-first,
+.user-main-info-friend-avatar,
+.user-main-info-friend-last {
+  overflow: hidden;
+  width: 43.5px;
+  height: 43.5px;
+  border-radius: 100%;
+  border: 3px white solid;
+  cursor: pointer;
+}
+
+.user-main-info-friend-avatar,
+.user-main-info-friend-last {
+  margin-left: -9px;
+}
+
+.user-main-info-friend-last {
+  background-color: rgba(75, 75, 75, 0.916);
+}
+
+.user-main-info-friend-last:hover {
+  background-color: rgb(75, 75, 75);
+}
+
+.user-main-info-friend-first img,
+.user-main-info-friend-avatar img,
+.user-main-info-friend-last img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-main-info-camera {
+  cursor: pointer;
+  position: absolute;
+  left: 265px;
+  top: 595px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e4e6eb;
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+}
+
+.user-main-info-camera:hover {
+  background-color: #dddee3;
+}
+
+.user-main-info-camera i {
+  padding: 3px;
+  font-size: 23px;
+}
+
+.user-main-avatar-info-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.user-main-add-news,
+.user-main-edit {
+  font-size: 15.5px;
+  font-weight: 500;
+  padding: 8px 12px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.user-main-add-news {
+  background-color: #1b74e4;
+  color: #ffffff;
+}
+
+.user-main-add-news:hover {
+  background-color: #1460bd;
+}
+
+.user-main-edit {
+  background-color: #e4e6eb;
+}
+
+.user-main-edit:hover {
+  background-color: #dadce0;
+}
+
+@media only screen and (max-width: 1000px) {
+  .bg-avatar {
+    width: 100%;
+    height: 215px;
+  }
+
+  .user-main-avatar {
+    position: absolute;
+    top: 185px;
+    left: 185px;
+  }
+
+  .user-main-info-camera {
+    left: 265px;
+    top: 200px;
+  }
+
+  .user-main-avatar-info-container {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 125px 5px 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user-main-avatar-info {
+    display: block;
+  }
+
+  .user-main-info {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user-main-avatar-info-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .user-main-info-camera {
+    left: 325px;
+    top: 325px;
+  }
+
+  .bg-avatar-optional {
+    width: 45px;
+  }
+
+  .bg-avatar-optional span {
+    display: none;
+  }
+}

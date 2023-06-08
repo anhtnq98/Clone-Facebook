@@ -33,7 +33,7 @@ function StoryCarousel() {
                 <div className="d-block w-25 story-img-container">
                   <img
                     className="img"
-                    src="https://scontent.fhan3-1.fna.fbcdn.net/v/t39.30808-6/349299248_275885074898216_2198376939325211895_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=N0oNLYCYGzMAX_yG5e_&_nc_ht=scontent.fhan3-1.fna&oh=00_AfC57seRy5r_1o6D4-kvvDfH7EOXYevYHwqqhpDY0p9JGw&oe=647B464F"
+                    src="https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/69116f6e-344f-4dc7-7f8c-4da23bf91400/width=450/364196.jpeg"
                     alt="First slide"
                   />
                 </div>

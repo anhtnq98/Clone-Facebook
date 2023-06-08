@@ -57,12 +57,49 @@
   box-shadow: 0px 2px 5px 0px rgba(178, 178, 178, 0.52);
   transition-duration: 0.7s;
   cursor: pointer;
+  transition-duration: 0.5;
 }
 
 .login-recently-choices-block:hover,
 .login-recently-choices-block-add:hover {
   transition-duration: 0.2s;
   box-shadow: 2px 6px 10px 2px rgba(178, 178, 178, 0.762);
+  transition-duration: 0.5;
+}
+
+.login-recently-choices-block:hover .login-recently-choices-block-delete {
+  top: 245px;
+  left: 68px;
+  font-size: x-large;
+  background-color: rgba(0, 0, 0, 0.402);
+  transition-duration: 0.5;
+}
+
+.login-recently-choices-block:hover .login-recently-choices-block-delete i {
+  font-size: larger;
+  color: white;
+}
+
+.login-recently-choices-block:hover
+  .login-recently-choices-block-delete
+  i:hover {
+  color: rgb(221, 221, 221);
+}
+
+.login-recently-choices-block-delete {
+  border-radius: 100%;
+  position: absolute;
+  top: 260px;
+  left: 80px;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-recently-choices-block-delete i {
+  font-size: larger;
+  color: rgba(0, 0, 0, 0.619);
 }
 
 .choices-block-img {
@@ -102,7 +139,8 @@
   flex: 5;
 }
 
-.login-input-container {
+.login-input-container,
+.login-input-container-modal {
   width: 450px;
   height: 400px;
   background-color: white;
@@ -113,7 +151,12 @@
   padding: 20px;
 }
 
-.login-input-container input {
+.login-input-container-modal {
+  margin-left: 5px;
+}
+
+.login-input-container input,
+.login-input-container-modal input {
   width: 100%;
   padding: 15px;
   margin-bottom: 20px;
@@ -327,7 +370,21 @@
     margin: 10px;
   }
 
+  .login-input-container-modal {
+    margin-left: 25px;
+  }
+
   .login-create-page {
     margin-left: 0;
+  }
+
+  .login-recently-choices-block:hover .login-recently-choices-block-delete {
+    top: 205px;
+    left: 75px;
+  }
+
+  .login-recently-choices-block-delete {
+    top: 220px;
+    left: 92px;
   }
 }

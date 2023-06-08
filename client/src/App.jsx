@@ -7,8 +7,10 @@ import Group from "./components/pages/group/Group";
 import Gaming from "./components/pages/gaming/Gaming";
 import Login from "./components/pages/register-login/Login";
 import Error from "./components/layouts/error/Error";
+import UserMain from "./components/pages/user/user-main/UserMain";
 
 function App() {
+  const loginFlag = JSON.parse(localStorage.getItem("loginFlag"));
   return (
     <>
       <Routes>
@@ -16,8 +18,16 @@ function App() {
         <Route path="/marketplace/" element={<MarketPlace />} />
         <Route path="/groups/feed/" element={<Group />} />
         <Route path="/gaming/play/" element={<Gaming />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
+        <Route path={`/user-main-page/`} element={<UserMain />} />
+        {loginFlag !== null ? (
+          <>
+            <Route path="/" element={<Home />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<Login />} />
+          </>
+        )}
         <Route path="*" element={<Error />} />
       </Routes>
     </>

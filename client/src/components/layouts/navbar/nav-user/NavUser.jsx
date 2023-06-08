@@ -3,21 +3,34 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function NavUser(props) {
+  const handleLogOut = () => {
+    JSON.parse(localStorage.getItem("loginFlag"));
+    localStorage.removeItem("loginFlag");
+    window.location.href = "/";
+  };
+
   return (
     <>
       <div className={props.navUserActiveStyle}>
         {/* NAV USER AVATAR */}
         <div className="nav-user-avatar">
-          <div className="nav-user-avatar-small">
-            <div className="nav-user-avatar-small-img">
-              <img
-                src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                alt=""
-              />
+          <Link
+            className="nav-link active"
+            aria-current="page"
+            to={"/user-main-page/"}
+          >
+            <div className="nav-user-avatar-small">
+              <div className="nav-user-avatar-small-img">
+                <img
+                  src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
+                  alt=""
+                />
+              </div>
+              <div className="nav-user-name">Anh Thân Ngọc</div>
             </div>
-            <div className="nav-user-name">Anh Thân Ngọc</div>
-          </div>
+          </Link>
           <hr className="nav-user-hr" />
+
           <div className="nav-user-all-pages-container">
             <div className="nav-user-all-pages">Xem tất cả trang cá nhân</div>
           </div>
@@ -37,12 +50,14 @@ function NavUser(props) {
             <i style={{ padding: "10px 12.5px" }} class="fa-solid fa-moon"></i>
             <div className="nav-user-settings-text">Chế độ tối</div>
           </div>
-          <Link className="nav-link active" aria-current="page" to={"/Login"}>
-            <div className="nav-user-settings">
-              <i class="fa-solid fa-right-from-bracket"></i>
-              <div className="nav-user-settings-text">Đăng xuất</div>
+
+          <div className="nav-user-settings">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <div onClick={handleLogOut} className="nav-user-settings-text">
+              Đăng xuất
             </div>
-          </Link>
+          </div>
+
           <div className="nav-user-footer">
             Quyền riêng tư · Điều khoản · Quảng cáo · Lựa chọn quảng cáo ·
             Cookie · · Meta © 2023

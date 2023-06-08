@@ -110,7 +110,6 @@ function HomeMiddle() {
     "🤴",
     "👸",
   ];
-  console.log(postIcon);
   const handlePostChange = (e) => {
     setCreatePostValue([e.target.value]);
   };
