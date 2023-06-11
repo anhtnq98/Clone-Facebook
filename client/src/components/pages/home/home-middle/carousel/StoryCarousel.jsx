@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
-function StoryCarousel() {
+function StoryCarousel(props) {
+  const user = props.user;
+  // MODAL ĐĂNG ẢNH STORY
+  const [showCreateStory, setShowCreateStory] = useState(false);
+  const handleCloseCreateStory = () => setShowCreateStory(false);
+  const handleShowCreateStory = () => setShowCreateStory(true);
+
+  const handleCreateStory = () => {};
+
   return (
     <>
       <div className="story-big-container">
@@ -18,10 +28,13 @@ function StoryCarousel() {
             <Carousel.Item>
               <div className="story-container">
                 {/* STORY BLOCK */}
-                <div className="d-block w-25 add-story">
+                <div
+                  onClick={handleShowCreateStory}
+                  className="d-block w-25 add-story"
+                >
                   <img
                     className="img-avatar"
-                    src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
+                    src={user.avatarDefault}
                     alt="First slide"
                   />
                   <i class="fa-solid fa-circle-plus"></i>
@@ -160,6 +173,17 @@ function StoryCarousel() {
           </Carousel>
         </div>
       </div>
+      <Modal show={showCreateStory} onHide={handleCloseCreateStory}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleCreateStory}>
+            Đăng ảnh
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

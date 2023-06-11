@@ -58,12 +58,7 @@
   align-items: center;
   margin-left: 175px;
   margin-right: 25px;
-}
-
-.nav-container .nav-middle div:hover {
-  background-color: #f2f2f2;
-  border-radius: 10px;
-  cursor: pointer;
+  padding: 5px 0 0 0;
 }
 
 .nav-container .nav-middle i {
@@ -77,6 +72,12 @@
 
 .nav-container .nav-middle .non-active i {
   color: #65676b;
+}
+
+.nav-container .nav-middle .non-active i:hover {
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .nav-container .nav-middle .active {
@@ -122,6 +123,7 @@
   height: 45px;
   overflow: hidden;
   cursor: pointer;
+  border: 1px solid rgb(206, 206, 206);
 }
 
 .right-avatar img {

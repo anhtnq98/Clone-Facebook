@@ -7,37 +7,23 @@ const connection = require("./utils/database");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
-const friendShipRoutes = require(`./routes/friendship.routes`);
+
+require("dotenv").config();
+
+// ROUTES
+const usersRoutes = require(`./routes/users.routes`);
 
 // parse application/x-www-form-urlencoded
-server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.urlencoded({ extended: true }));
 // parse application/jsonnpm
 server.use(bodyParser.json());
 server.use(cors());
+server.use(express.static("public"));
 
 // users route
-server.use(`/api/v1/friendship`, friendShipRoutes);
+server.use(`/api/v1/users`, usersRoutes);
 
-server.get("/api/v1/users", (req, res) => {
-  // Câu lệnh truy vấn lấy thông tin tất cả bản ghi
-  const queryString = "SELECT * FROM users";
-
-  connection.query(queryString, (err, result) => {
-    if (err) {
-      return res.status(500).json({
-        status: "Failed",
-        error: err,
-      });
-    } else {
-      return res.status(200).json({
-        status: "OK",
-        results: result.length,
-        data: result,
-      });
-    }
-  });
-});
-
+// register
 server.post("/api/v1/register", (req, res) => {
   const {
     firstName,
@@ -51,10 +37,11 @@ server.post("/api/v1/register", (req, res) => {
   } = req.body;
   const userId = uuidv4();
   const avatarDefault =
-    "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/facebook-avatar%2Fdefaul%20avatar.jpg?alt=media&token=3fe4e2c3-0631-4f66-9ab2-bb7e34fda2aa";
+    "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FDefault%2Fdefaul%20avatar.jpg?alt=media&token=b0ddbdef-604a-4c4e-9155-0e31cf8c1d91";
   const backgroundDefault =
-    "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/facebook-avatar%2Fdefaul%20background.jpg?alt=media&token=1d9a4170-556d-416a-8665-c1f06565624c";
+    "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FDefault%2Fdefault%20bg.webp?alt=media&token=edd51898-734d-42b2-ae02-951c5644093c";
   // Mã hóa mật khẩu
+
   bcrypt.hash(password, 10, (err, hash) => {
     if (err) {
       res.status(500).json({
@@ -76,9 +63,11 @@ server.post("/api/v1/register", (req, res) => {
         avatarDefault,
         backgroundDefault,
       ];
+
       // Câu lệnh query
       const query = `INSERT INTO users(userId, firstName, surName, email, password, dayOfBirth, monthOfBirth, yearOfBirth, gender, avatarDefault, backgroundDefault) 
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)`;
+        VALUES (?,?,?,?,?,?,?,?,?,?,?);
+        `;
       // Kêt nối
       connection.query(query, newUser, (err) => {
         if (err) {
@@ -132,14 +121,14 @@ server.post("/api/v1/login", (req, res) => {
               });
             } else {
               // Tạo ra một chuỗi token
-              const token = jwt.sign({ id: user.userId }, "your_srcet_key", {
+              const token = jwt.sign({ id: user.userId }, process.env.SECRET, {
                 expiresIn: "1h",
               });
               return res.status(200).json({
                 status: 200,
                 message: "Đăng nhập thành công",
                 data: user,
-                token,
+                token: token,
               });
             }
           }

@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function NavUser(props) {
+  const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
   const handleLogOut = () => {
     JSON.parse(localStorage.getItem("loginFlag"));
     localStorage.removeItem("loginFlag");
@@ -17,16 +18,15 @@ function NavUser(props) {
           <Link
             className="nav-link active"
             aria-current="page"
-            to={"/user-main-page/"}
+            to={`/${saveFlag.userId}/`}
           >
             <div className="nav-user-avatar-small">
               <div className="nav-user-avatar-small-img">
-                <img
-                  src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                  alt=""
-                />
+                <img src={props.user.avatarDefault} alt="" />
               </div>
-              <div className="nav-user-name">Anh Thân Ngọc</div>
+              <div className="nav-user-name">
+                {props.user.firstName} {props.user.surName}
+              </div>
             </div>
           </Link>
           <hr className="nav-user-hr" />

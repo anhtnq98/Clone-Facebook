@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Search.css";
 
 function Search() {
+  const [searchStyle, setSearchStyle] = useState("search-board");
+
   return (
     <>
-      <div className="search">
+      <div
+        onClick={() => setSearchStyle("search-board-active")}
+        className="search"
+      >
         <i class="fa-solid fa-magnifying-glass"></i>
       </div>
-      <div className="search-board">
+      <div className={searchStyle}>
         <div className="search-header">
-          <div>
+          <div
+            onClick={() => {
+              setSearchStyle("search-board");
+            }}
+          >
             <i id="search-back" class="fa-sharp fa-solid fa-arrow-left"></i>
           </div>
           <input type="text" placeholder="Tìm kiếm trên Facebook" />

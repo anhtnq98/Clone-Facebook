@@ -1,34 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./UserMain.css";
 import MyNavbar from "../../../layouts/navbar/MyNavbar";
 import UserMainHeader from "./user-main-header/UserMainHeader";
-import { Route, Routes } from "react-router-dom";
-import UserMainHome from "./user-main-bottom/user-main-home/UserMainHome";
-import UserMainAbout from "./user-main-bottom/user-main-about/UserMainAbout";
-import UserMainFriends from "./user-main-bottom/user-main-friends/UserMainFriends";
-import UserMainPhotos from "./user-main-bottom/user-main-photos/UserMainPhotos";
-import UserMainVideos from "./user-main-bottom/user-main-videos/UserMainVideos";
+import { Outlet } from "react-router-dom";
+import axios from "axios";
 
 function UserMain() {
-  // const loginFlag = JSON.parse(localStorage.getItem("loginFlag"));
+  // Lấy dữ liệu từ users
+  const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
+  const id = saveFlag.userId;
+  const [user, setUser] = useState([]);
+  const loadData = async () => {
+    const result = await axios.get(`http://localhost:5000/api/v1/users/${id}`);
+    setUser(result.data.data[0]);
+  };
+  useEffect(() => {
+    loadData();
+  });
+
+  // Lấy dữ liệu bạn bè
+  const [friends, setFfriends] = useState([]);
+  const loadFriends = async () => {
+    const result = await axios.get(
+      `http://localhost:5000/api/v1/users/friends/${id}`
+    );
+    setFfriends(result.data.data);
+  };
+
+  useEffect(() => {
+    loadFriends();
+  }, []);
+
   return (
     <>
       <MyNavbar />
       <div className="user-main-container">
         {/* USER MAIN HEADER */}
-        <UserMainHeader />
+        <UserMainHeader user={user} friends={friends} />
         {/* USER MAIN HEADER */}
         <div className="user-main-bottom">
-          <Routes>
-            <Route path="/user-main-page/" element={<UserMainHome />} />
-            <Route path="/user-main-page/about" element={<UserMainAbout />} />
-            <Route
-              path="/user-main-page/friends"
-              element={<UserMainFriends />}
-            />
-            <Route path="/user-main-page/photos" element={<UserMainPhotos />} />
-            <Route path="/user-main-page/videos" element={<UserMainVideos />} />
-          </Routes>
+          <Outlet context={[user]}></Outlet>
         </div>
       </div>
     </>

@@ -24,7 +24,8 @@ const props = {
   },
 };
 
-function HomeMiddle() {
+function HomeMiddle(userProp) {
+  const user = userProp.user;
   // CREATE POST MODAL
   const [showCreatePost, setShowCreatePost] = useState(false);
   const handleCloseCreatePost = () => setShowCreatePost(false);
@@ -133,21 +134,18 @@ function HomeMiddle() {
   return (
     <>
       <div className="home-middle">
-        <StoryCarousel />
+        <StoryCarousel user={user} />
         {/* NEWFEED INPUT */}
         <div className="create-newfeed-container">
           <div className="create-newfeed-input-container">
             <div className="create-newfeed-avatar">
-              <img
-                src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                alt=""
-              />
+              <img src={user.avatarDefault} alt="" />
             </div>
             <div
               onClick={handleShowCreatePost}
               className="create-newfeed-input"
             >
-              Thân Ngọc ơi, bạn đang nghĩ gì thế?
+              {user.surName} ơi, bạn đang nghĩ gì thế?
             </div>
           </div>
           <div className="create-newfeed-videos-images">
@@ -416,7 +414,7 @@ function HomeMiddle() {
                     type="text"
                     value={createPostValue}
                     onChange={handlePostChange}
-                    placeholder="Thân Ngọc ơi, bạn đang nghĩ gì thế?"
+                    placeholder={`${user.surName} ơi, bạn đang nghĩ gì thế?`}
                   ></textarea>
 
                   <i onClick={handleShowIcons} className="far fa-smile"></i>

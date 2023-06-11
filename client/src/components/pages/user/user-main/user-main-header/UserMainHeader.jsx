@@ -1,89 +1,304 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./UserMainHeader.css";
+import { NavLink } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { storage } from "../../../../../firebase";
+import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { ToastContainer, toast } from "react-toastify";
 
-function UserMainHeader() {
+function UserMainHeader(userProps) {
+  const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
+
+  const navLinkClassName = ({ isActive }) =>
+    isActive ? "user-main-nav-active" : "user-main-nav";
+
+  // =================================== MODAL =============================>>>>>>>>>>>>>>>>>>>>>> //
+  // Modal bg
+  const [showEditBackgroundIMG, setShowEditBackgroundIMG] = useState(false);
+  const handleCloseEditBackgroundIMG = () => setShowEditBackgroundIMG(false);
+  const handleShowEditBackgroundIMG = () => setShowEditBackgroundIMG(true);
+  // Modal avatar
+  const [showEditAvatar, setShowEditAvatar] = useState(false);
+  const handleCloseEditAvatar = () => setShowEditAvatar(false);
+  const handleShowEditAvatar = () => setShowEditAvatar(true);
+  // =================================== MODAL END=============================>>>>>>>>>>>>>>>>>>>>>> //
+
+  // =================================== UPLOAD =============================>>>>>>>>>>>>>>>>>>>>>> //
+  // State upload bg lên
+  const [bgImgPreview, setBgImgPreview] = useState(null);
+  const [bgImgUpload, setBgImgUpload] = useState(null);
+  // State upload avatar lên
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarUpload, setAvatarUpload] = useState(null);
+
+  // State lấy url ảnh về
+  const [bgUrls, setBgUrls] = useState([]);
+  const [avatarUrls, setAvatarUrls] = useState([]);
+
+  // Tạo storage lưu trữ từ dịch vụ của firebase
+  // storage bg
+  const bgsListRef = ref(
+    storage,
+    `users/${saveFlag.surName}-${saveFlag.firstName}/photos/background`
+  );
+  // storage avatar
+  const avatarsListRef = ref(
+    storage,
+    `users/${saveFlag.surName}-${saveFlag.firstName}/photos/avatar`
+  );
+
+  //Hàm đọc ảnh input bg
+
+  const handleBgChange = (e) => {
+    const bgFile = e.target.files[0];
+    if (bgFile) {
+      setBgImgUpload(bgFile);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setBgImgPreview(reader.result);
+      });
+      reader.readAsDataURL(bgFile);
+    }
+  };
+
+  //Hàm đọc ảnh input avatar
+  const handleAvatarChange = (e) => {
+    const avatarFile = e.target.files[0];
+    if (avatarFile) {
+      setAvatarUpload(avatarFile);
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setAvatarPreview(reader.result);
+      });
+      reader.readAsDataURL(avatarFile);
+    }
+  };
+
+  // Lấy thời gian hiện tại
+  const today = new Date();
+  const date =
+    today.getFullYear() +
+    "" +
+    (today.getMonth() < 10
+      ? "0" + (today.getMonth() + 1).toString()
+      : today.getMonth() + 1) +
+    "" +
+    (today.getDate() < 10 ? "0" + today.getDate().toString() : today.getDate());
+  const time =
+    (today.getHours() < 10
+      ? "0" + today.getHours().toString()
+      : today.getHours()) +
+    "" +
+    (today.getMinutes() < 10
+      ? "0" + today.getMinutes().toString()
+      : today.getMinutes()) +
+    "" +
+    (today.getSeconds() < 10
+      ? "0" + today.getSeconds().toString()
+      : today.getSeconds());
+  const dateTime = Number(date + time);
+
+  // Viết hàm upload bg
+  const handleUploadBg = () => {
+    if (bgImgUpload == null) {
+      toast.warning("Ảnh bìa chưa được chọn", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+      return;
+    }
+    const bgListRef = ref(
+      storage,
+      `users/${saveFlag.surName}-${saveFlag.firstName}/photos/background/${dateTime}_${bgImgUpload.name}`
+    );
+    uploadBytes(bgListRef, bgImgUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setBgUrls((prev) => [...prev, url]);
+      });
+    });
+    toast.success("Ảnh bìa đang được tải lên", {
+      position: toast.POSITION.BOTTOM_CENTER,
+      className: "foo-bar",
+    });
+  };
+
+  // Viết hàm upload avatar
+  const handleUploadAvatar = () => {
+    if (avatarUpload == null) {
+      toast.warning("Ảnh đại diện chưa được chọn", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+      return;
+    }
+    const avatarListRef = ref(
+      storage,
+      `users/${saveFlag.surName}-${saveFlag.firstName}/photos/avatar/${dateTime}_${avatarUpload.name}`
+    );
+    uploadBytes(avatarListRef, avatarUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setAvatarUrls((prev) => [...prev, url]);
+      });
+    });
+    toast.success("Ảnh đại diện đã được tải lên", {
+      position: toast.POSITION.BOTTOM_CENTER,
+      className: "foo-bar",
+    });
+  };
+
+  const inputRef = useRef(null);
+
+  // Hàm update bg
+  const handleUpdateBg = async () => {
+    const backgroundDefault = bgUrls[bgUrls.length - 1];
+    await axios.put(
+      `http://localhost:5000/api/v1/users/upload-background/${saveFlag.userId}`,
+      { backgroundDefault: backgroundDefault }
+    );
+    toast.success("Cập nhật ảnh bìa thành công", {
+      position: toast.POSITION.BOTTOM_LEFT,
+    });
+    inputRef.current.value = null;
+    setBgImgPreview(null);
+    handleCloseEditBackgroundIMG();
+  };
+
+  // Hàm update avatar
+  const handleUpdateAvatar = async () => {
+    const avatarDefault = avatarUrls[avatarUrls.length - 1];
+    await axios.put(
+      `http://localhost:5000/api/v1/users/upload-avatar/${saveFlag.userId}`,
+      { avatarDefault: avatarDefault }
+    );
+    toast.success("Cập nhật ảnh đại diện thành công", {
+      position: toast.POSITION.BOTTOM_LEFT,
+    });
+    localStorage.setItem(
+      "saveFlag",
+      JSON.stringify({
+        userId: saveFlag.userId,
+        firstName: saveFlag.firstName,
+        surName: saveFlag.surName,
+        avatarDefault: avatarDefault,
+      })
+    );
+    setAvatarPreview(null);
+    inputRef.current.value = null;
+    handleCloseEditAvatar();
+  };
+
+  // Lấy dữ liệu trả về từ firebase
+  useEffect(() => {
+    listAll(bgsListRef).then((res) => {
+      res.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setBgUrls((prev) => [...prev, url]);
+        });
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    listAll(avatarsListRef).then((res) => {
+      res.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setAvatarUrls((prev) => [...prev, url]);
+        });
+      });
+    });
+  }, []);
+
+  // =================================== UPLOAD END=============================>>>>>>>>>>>>>>>>>>>>>> //
+
   return (
     <>
       <div className="user-main-header">
         <div
           style={{
-            backgroundImage: `url("https://scontent.fhan3-5.fna.fbcdn.net/v/t39.30808-6/289019810_3144543382523232_7376749079844256890_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=e3f864&_nc_ohc=bsDrm08dLT0AX9MkBi4&_nc_ht=scontent.fhan3-5.fna&oh=00_AfAzAHz1M110D2b3AmNyM05ftt9qmOxC1cbP7YwnQqmCPA&oe=64845A83")`,
+            backgroundImage: `url(${userProps.user.backgroundDefault})`,
           }}
           className="bg-avatar"
         >
           <div className="bg-avatar-optional">
             <i class="fas fa-smile"></i> <span> Tạo với avatar</span>
           </div>
-          <div style={{ marginBottom: "15px" }} className="bg-avatar-optional">
+          <div
+            onClick={handleShowEditBackgroundIMG}
+            style={{ marginBottom: "15px" }}
+            className="bg-avatar-optional"
+          >
             <i class="fas fa-camera"></i> <span> Chỉnh sửa ảnh bìa</span>
           </div>
         </div>
         <div className="user-main-avatar-info-container">
           <div className="user-main-avatar-info">
             <div className="user-main-avatar-info-left">
-              <div className="user-main-avatar">
-                <img
-                  src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                  alt=""
-                />
+              <div onClick={handleShowEditAvatar} className="user-main-avatar">
+                <img src={userProps.user.avatarDefault} alt="" />
               </div>
               <div className="user-main-info">
-                <div className="user-main-info-name">Anh Thân Ngọc</div>
-                <div className="user-main-info-nickname">(Chibi)</div>
-                <div className="user-main-info-friend-quantity">
-                  2,3K bạn bè
+                <div className="user-main-info-name">
+                  {userProps.user.firstName} {userProps.user.surName}
                 </div>
+                {userProps.user.nickName !== null ? (
+                  <>
+                    <div className="user-main-info-nickname">
+                      ({userProps.user.nickName})
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
+                {userProps.friends !== null ? (
+                  <>
+                    <div className="user-main-info-friend-quantity">
+                      {userProps.friends.length} bạn bè
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="user-main-info-friend-quantity">
+                      0 bạn bè
+                    </div>
+                  </>
+                )}
+
                 <div className="user-main-info-friend">
-                  <div className="user-main-info-friend-first">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
-                  </div>
-                  <div className="user-main-info-friend-avatar">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
-                  </div>
-                  <div className="user-main-info-friend-avatar">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
-                  </div>
-                  <div className="user-main-info-friend-avatar">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
-                  </div>
-                  <div className="user-main-info-friend-avatar">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
-                  </div>
-                  <div className="user-main-info-friend-avatar">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
-                  </div>
-                  <div className="user-main-info-friend-avatar">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
-                  </div>
-                  <div className="user-main-info-friend-last">
-                    <img
-                      src="https://cdn2.iconfinder.com/data/icons/leto-most-searched-mix-3/64/__menu_more-27-512.png"
-                      alt=""
-                    />
-                  </div>
+                  {userProps.friends.length === 1 ? (
+                    <>
+                      <div className="user-main-info-friend-first">
+                        <img src={userProps.friends[0]?.avatarDefault} alt="" />
+                      </div>
+                    </>
+                  ) : userProps.friends.length > 1 ? (
+                    userProps.friends
+                      ?.slice(0, 7)
+                      .map((friend, friendIndex) => (
+                        <div
+                          key={friendIndex}
+                          className="user-main-info-friend-avatar"
+                        >
+                          <img src={friend.avatarDefault} alt="" />
+                        </div>
+                      ))
+                  ) : userProps.friends.length >= 8 ? (
+                    <>
+                      <div className="user-main-info-friend-last">
+                        <img
+                          src="https://cdn2.iconfinder.com/data/icons/leto-most-searched-mix-3/64/__menu_more-27-512.png"
+                          alt=""
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
-                <div className="user-main-info-camera">
+                <div
+                  onClick={handleShowEditAvatar}
+                  className="user-main-info-camera"
+                >
                   <i class="fas fa-camera-retro"></i>
                 </div>
               </div>
@@ -97,10 +312,93 @@ function UserMainHeader() {
               </div>
             </div>
           </div>
-          <hr />
-          <div>ààầ</div>
+          <div className="user-main-nav-container">
+            <NavLink className={navLinkClassName} to={`/${saveFlag.userId}/`}>
+              Bài viết
+            </NavLink>
+            <NavLink
+              className={navLinkClassName}
+              to={`/${saveFlag.userId}/about`}
+            >
+              Giới thiệu
+            </NavLink>
+            <NavLink
+              className={navLinkClassName}
+              to={`/${saveFlag.userId}/friends`}
+            >
+              Bạn bè
+            </NavLink>
+            <NavLink
+              className={navLinkClassName}
+              to={`/${saveFlag.userId}/photos`}
+            >
+              Ảnh
+            </NavLink>
+            <NavLink
+              className={navLinkClassName}
+              to={`/${saveFlag.userId}/videos`}
+            >
+              Video
+            </NavLink>
+          </div>
         </div>
       </div>
+
+      {/* MODAL EDIT BACKGROUND IMG */}
+      <Modal show={showEditBackgroundIMG} onHide={handleCloseEditBackgroundIMG}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ảnh bìa</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input
+            ref={inputRef}
+            type="file"
+            name="bg"
+            onChange={handleBgChange}
+          />
+          <div className="img-upload">
+            <img src={bgImgPreview} alt="" />
+            <Button variant="primary" onClick={handleUploadBg}>
+              Tải ảnh bìa lên
+            </Button>{" "}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleUpdateBg}>
+            Thay đổi ảnh bìa
+          </Button>{" "}
+        </Modal.Footer>
+      </Modal>
+      {/* MODAL EDIT BACKGROUND IMG END*/}
+
+      {/* MODAL EDIT AVATAR IMG */}
+      <Modal show={showEditAvatar} onHide={handleCloseEditAvatar}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ảnh đại diện</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input
+            ref={inputRef}
+            type="file"
+            name="avatar"
+            onChange={handleAvatarChange}
+          />
+          <div className="img-upload">
+            <img src={avatarPreview} alt="" />
+            <Button variant="primary" onClick={handleUploadAvatar}>
+              Tải ảnh đại diện
+            </Button>{" "}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleUpdateAvatar}>
+            Thay đổi ảnh đại diện
+          </Button>{" "}
+        </Modal.Footer>
+      </Modal>
+      {/* MODAL EDIT BACKGROUND IMG END*/}
+
+      <ToastContainer autoClose={1500} />
     </>
   );
 }

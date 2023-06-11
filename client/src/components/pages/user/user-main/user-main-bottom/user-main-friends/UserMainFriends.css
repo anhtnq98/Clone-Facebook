@@ -1,0 +1,154 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.user-main-friend-container {
+  padding: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.user-main-friend {
+  padding: 25px 20px;
+  width: 83%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px 0px rgba(178, 178, 178, 0.52);
+}
+
+.user-main-friend-title-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-main-friend-right {
+  display: flex;
+}
+
+.user-main-friend-search {
+  padding: 10px 0px 10px 12px;
+  background-color: rgba(229, 231, 237, 0.609);
+  border-radius: 25px;
+}
+
+.user-main-friend-search i {
+  color: gray;
+  padding-right: 10px;
+}
+
+.user-main-friend-search input {
+  width: 200px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.user-main-friend-search input::placeholder {
+  color: rgb(110, 110, 110);
+  font-size: 17px;
+}
+
+.user-main-friend-request {
+  padding: 10px 25px;
+  font-weight: 500;
+  color: #4591f4;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.user-main-friend-request:hover {
+  background-color: rgba(221, 224, 230, 0.609);
+}
+
+.user-main-friend-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.user-main-friend-list-block {
+  width: 49.5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid rgba(232, 230, 230, 0.883);
+  margin-top: 10px;
+  padding: 15px;
+}
+
+.user-main-friend-list-block-left {
+  display: flex;
+  align-items: center;
+}
+
+.friend-list-block-left-img {
+  width: 95px;
+  height: 95px;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: black;
+}
+
+.friend-list-block-left-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.friend-list-block-left-img img:hover {
+  opacity: 95%;
+}
+
+.friend-list-block-left-text {
+  padding: 0 15px;
+}
+
+.friend-list-block-left-text-name {
+  font-size: 17.5px;
+  font-weight: 500;
+}
+
+.friend-list-block-left-text-same {
+  font-size: 15px;
+  color: rgb(113, 113, 113);
+}
+
+.friend-list-block-left-text-name:hover,
+.friend-list-block-left-text-same:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.friend-list-block-left-dot {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.friend-list-block-left-dot:hover {
+  background-color: rgba(236, 233, 233, 0.743);
+}
+
+.friend-list-block-left-dot span {
+  font-size: larger;
+  padding-top: 2px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .user-main-friend-container {
+    padding: 25px 0;
+  }
+
+  .user-main-friend {
+    width: 100%;
+  }
+}

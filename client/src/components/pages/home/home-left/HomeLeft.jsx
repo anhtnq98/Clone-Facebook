@@ -2,22 +2,31 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./HomeLeft.css";
 
-function HomeLeft() {
+function HomeLeft(userProp) {
   return (
     <>
       <div className="home-left">
         <div className="left-top">
-          <div className="left-top-user">
-            <div className="left-top-avatar">
-              <img
-                src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                alt=""
-              />
+          <Link
+            className="nav-link active"
+            aria-current="page"
+            to={`/${userProp.user.userId}/`}
+          >
+            <div className="left-top-user">
+              <div className="left-top-avatar">
+                <img src={userProp.user.avatarDefault} alt="" />
+              </div>
+              <div className="left-top-name">
+                {userProp.user.firstName} {userProp.user.surName}
+              </div>
             </div>
-            <div className="left-top-name">Anh Thân Ngọc</div>
-          </div>
+          </Link>
           {/* LEFT TOP MIDDLE BLOCK */}
-          <Link className="nav-link active" aria-current="page">
+          <Link
+            className="nav-link active"
+            aria-current="page"
+            to={`/${userProp.user.userId}/friends`}
+          >
             <div className="left-top-middle">
               <div className="left-top-icon">
                 <i class="fa-solid fa-user-group"></i>

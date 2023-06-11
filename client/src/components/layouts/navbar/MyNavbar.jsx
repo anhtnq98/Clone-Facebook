@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link, NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Search from "./search/Search";
 import NavUser from "./nav-user/NavUser";
+import axios from "axios";
 
 function MyNavbar() {
+  // Lấy dữ liệu từ users
+  const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
+  const id = saveFlag.userId;
+  const [user, setUser] = useState([]);
+  const loadData = async () => {
+    const result = await axios.get(`http://localhost:5000/api/v1/users/${id}`);
+    setUser(result.data.data[0]);
+  };
+
+  useEffect(() => {
+    loadData();
+  });
+
   // Trạng thái active của router
   const navLinkClassName = ({ isActive }) =>
     isActive ? "active" : "non-active";
@@ -90,15 +104,12 @@ function MyNavbar() {
           <div className="right-icon-nofication">5</div>
           {/* RIGHT AVATAR */}
           <div onClick={handleClick} className="right-avatar">
-            <img
-              src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-              alt=""
-            />
+            <img src={user.avatarDefault} alt="" />
           </div>
           {/* RIGHT AVATAR END*/}
         </div>
         {/* NAV USER */}
-        <NavUser navUserActiveStyle={navUserActiveStyle} />
+        <NavUser navUserActiveStyle={navUserActiveStyle} user={user} />
         {/* NAV USER END*/}
       </Navbar>
     </div>

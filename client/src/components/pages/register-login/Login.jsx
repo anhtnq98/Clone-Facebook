@@ -60,9 +60,9 @@ function Login() {
     monthOfBirth: "",
     yearOfBirth: "",
     avatarDefault:
-      "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/facebook-avatar%2Fdefaul%20avatar.jpg?alt=media&token=3fe4e2c3-0631-4f66-9ab2-bb7e34fda2aa",
+      "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FDefault%2Fdefaul%20avatar.jpg?alt=media&token=b0ddbdef-604a-4c4e-9155-0e31cf8c1d91",
     backgroundDefault:
-      "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/facebook-avatar%2Fdefaul%20background.jpg?alt=media&token=1d9a4170-556d-416a-8665-c1f06565624c",
+      "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FDefault%2Fdefault%20bg.webp?alt=media&token=edd51898-734d-42b2-ae02-951c5644093c",
   });
 
   const handleChange = (e) => {
@@ -140,9 +140,9 @@ function Login() {
       monthOfBirth: "",
       yearOfBirth: "",
       avatarDefault:
-        "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/facebook-avatar%2Fdefaul%20avatar.jpg?alt=media&token=3fe4e2c3-0631-4f66-9ab2-bb7e34fda2aa",
+        "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FDefault%2Fdefaul%20avatar.jpg?alt=media&token=b0ddbdef-604a-4c4e-9155-0e31cf8c1d91",
       backgroundDefault:
-        "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/facebook-avatar%2Fdefaul%20background.jpg?alt=media&token=1d9a4170-556d-416a-8665-c1f06565624c",
+        "https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FDefault%2Fdefault%20bg.webp?alt=media&token=edd51898-734d-42b2-ae02-951c5644093c",
     });
   };
 
@@ -181,14 +181,14 @@ function Login() {
             userId: response.data.data.userId,
             firstName: response.data.data.firstName,
             surName: response.data.data.surName,
-            avatarDefault: response.data.data.surName,
+            avatarDefault: response.data.data.avatarDefault,
           })
         );
         toast.success("Đăng nhập thành công!", {
           position: toast.POSITION.BOTTOM_LEFT,
         });
         setTimeout(() => {
-          navigate(`/user-main-page/`);
+          window.location.href = `/`;
         }, 2500);
       })
       .catch((error) => {
@@ -238,12 +238,9 @@ function Login() {
               <>
                 <div className="login-recently-choices-block">
                   <div className="choices-block-img">
-                    <img
-                      src="https://scontent.fhan3-1.fna.fbcdn.net/v/t1.6435-1/165567076_2820496928261214_5651026651800192589_n.jpg?stp=dst-jpg_p320x320&_nc_cat=102&ccb=1-7&_nc_sid=7206a8&_nc_ohc=utqwnKmLXmEAX9UbbtW&_nc_ht=scontent.fhan3-1.fna&oh=00_AfBrsybjkQQcFxw1vDog4eKdH3JDCGEPuTaj-TlTVsDjCg&oe=64951D4E"
-                      alt=""
-                    />
+                    <img src={saveFlag.avatarDefault} alt="" />
                   </div>
-                  <div className="choices-block-name">Thân Ngọc</div>
+                  <div className="choices-block-name">{saveFlag.surName}</div>
                   <div
                     onClick={handleDeleteLoginAccount}
                     className="login-recently-choices-block-delete"
