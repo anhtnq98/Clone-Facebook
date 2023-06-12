@@ -84,7 +84,8 @@ input[type="file"]::file-selector-button:hover {
   text-align: center;
 }
 
-.user-main-avatar {
+.user-main-avatar,
+.friend-main-avatar {
   overflow: hidden;
   width: 195px;
   height: 195px;
@@ -94,19 +95,31 @@ input[type="file"]::file-selector-button:hover {
   border: 5px solid white;
 }
 
-.user-main-avatar img {
+.friend-main-avatar {
+  position: absolute;
+  top: 400px;
+}
+
+.user-main-avatar img,
+.friend-main-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.user-main-avatar img:hover {
+.user-main-avatar img:hover,
+.friend-main-avatar img:hover {
   opacity: 85%;
 }
 
-.user-main-info {
+.user-main-info,
+.friend-main-info {
   padding: 0 20px;
   text-align: left;
+}
+
+.friend-main-info {
+  margin: 5px 0 55px 195px;
 }
 
 .user-main-info-name {
@@ -122,6 +135,13 @@ input[type="file"]::file-selector-button:hover {
   color: rgb(99, 99, 99);
   font-size: 15.5px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.user-main-info-friend-quantity i {
+  font-size: 4px;
+  padding: 3px 5px 0px 5px;
 }
 
 .user-main-info-friend {
@@ -260,7 +280,8 @@ input[type="file"]::file-selector-button:hover {
     height: 215px;
   }
 
-  .user-main-avatar {
+  .user-main-avatar,
+  .friend-main-avatar {
     position: absolute;
     top: 185px;
     left: 185px;
@@ -285,12 +306,17 @@ input[type="file"]::file-selector-button:hover {
     display: block;
   }
 
-  .user-main-info {
+  .user-main-info,
+  .friend-main-info {
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  .friend-main-info {
+    margin: 0px;
   }
 
   .user-main-avatar-info-left {
@@ -311,5 +337,9 @@ input[type="file"]::file-selector-button:hover {
 
   .bg-avatar-optional span {
     display: none;
+  }
+
+  .user-main-avatar-info-right {
+    justify-content: center;
   }
 }

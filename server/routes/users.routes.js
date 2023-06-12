@@ -43,6 +43,27 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.get("/friend/hint/:id", (req, res) => {
+  const { id } = req.params;
+  // Câu lệnh truy vấn lấy thông tin tất cả bản ghi
+  const queryString = `SELECT * FROM users WHERE userId = "${id}"`;
+
+  connection.query(queryString, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        status: "Failed",
+        error: err,
+      });
+    } else {
+      return res.status(200).json({
+        status: "OK",
+        results: result.length,
+        data: result,
+      });
+    }
+  });
+});
+
 router.get("/friends/:id", (req, res) => {
   const { id } = req.params;
   // Câu lệnh truy vấn lấy thông tin bạn bè
@@ -56,6 +77,37 @@ router.get("/friends/:id", (req, res) => {
   u.firstName,
   u.surName,
   u.avatarDefault
+FROM
+  friendship AS f
+      JOIN
+  users AS u ON f.friendTwo = u.userId
+WHERE
+  friendOne = '${id}' AND friendStatus = 2
+`;
+
+  connection.query(queryString, (err, result) => {
+    if (err) {
+      return res.status(500).json({
+        status: "Failed",
+        error: err,
+      });
+    } else {
+      return res.status(200).json({
+        status: "OK",
+        results: result.length,
+        data: result,
+      });
+    }
+  });
+});
+
+router.get("/check-same-friends/:id", (req, res) => {
+  const { id } = req.params;
+  // Câu lệnh truy vấn lấy thông tin bạn bè
+  const queryString = `SELECT 
+  f.friendShipId,
+  f.friendOne,
+  f.friendTwo
 FROM
   friendship AS f
       JOIN

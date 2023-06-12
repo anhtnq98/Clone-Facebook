@@ -72,8 +72,9 @@ FROM
     users AS u ON f.friendTwo = u.userId
 WHERE
     friendOne = '605af3ff-4326-4d2c-aaf9-ee4c9ba3ab66'
-        AND friendStatus = 2
+        AND friendStatus =2
 ;
+        
 drop table friendship;
 
 
