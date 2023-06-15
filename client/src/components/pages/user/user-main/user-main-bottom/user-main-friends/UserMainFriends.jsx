@@ -6,10 +6,11 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 
-function UserMainFriends(props) {
+function UserMainFriends() {
   //<<<<<<<<<<<<<<<<<< ==================================== MY SQL FRIENDS =================================================== >>>>>>>>>>>>>>//
   // Lấy dữ liệu bạn bè
   const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
+
   const id = saveFlag.userId;
   const [friends, setFfriends] = useState([]);
   const loadFriends = async () => {
@@ -21,11 +22,27 @@ function UserMainFriends(props) {
 
   useEffect(() => {
     loadFriends();
-  });
+  }, []);
+
+  // lấy tất cả người dùng
+  const [users, setUsers] = useState([]);
+  const loadAllUser = async () => {
+    const result = await axios.get(`http://localhost:5000/api/v1/users`);
+    setUsers(result.data.data);
+  };
+
+  useEffect(() => {
+    loadAllUser();
+  }, []);
+
   //<<<<<<<<<<<<<<<<<< ================================= MY SQL FRIENDS END=================================================== >>>>>>>>>>>>>>//
 
   // List kết bạn trong đó không có bạn bè và chính chủ
-  const listUser = props.listUser.filter((e) => e.userId !== saveFlag.userId);
+  const listUser = users.filter((e) => e.userId !== saveFlag.userId);
+  const rejectFriend = friends.filter((e, i) => e.friendStatus === 3);
+  const trueFriend = friends.filter((e, i) => e.friendStatus === 2);
+  const requestFriend = friends.filter((e, i) => e.friendStatus === 1);
+  const pendingFriend = friends.filter((e, i) => e.friendStatus === 0);
 
   //<<<<<<<<<<<<<<<<<< ========================================== MODAL =================================================== >>>>>>>>>>>>>>//
   // Ẩn hiện kết bạn
@@ -40,9 +57,109 @@ function UserMainFriends(props) {
 
   //<<<<<<<<<<<<<<<<<< ========================================== MODAL END =================================================== >>>>>>>>>>>>>>//
 
-  const handleAddFriend = () => {
-    
-  }
+  const handleAddFriend = async (friendTwo) => {
+    const newFriendOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+      friendStatus: 1,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    const newFriendTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+      friendStatus: 0,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend",
+      newFriendOne
+    );
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend",
+      newFriendTwo
+    );
+    loadFriends();
+    loadAllUser();
+  };
+
+  const handleDisappear = async (friendTwo) => {
+    const newFriendOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+      friendStatus: 3,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    const newFriendTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+      friendStatus: 3,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend-disappear",
+      newFriendOne
+    );
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend-disappear",
+      newFriendTwo
+    );
+    loadFriends();
+    loadAllUser();
+  };
+
+  const handleConfirm = async (friendTwo) => {
+    const valueOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+    };
+
+    const valueTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+    };
+
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-confirm/`,
+      valueOne
+    );
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-confirm/`,
+      valueTwo
+    );
+    window.location.reload();
+  };
+
+  const handleCancelAddFriend = async (friendTwo) => {
+    console.log(friendTwo);
+    const valueOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+    };
+
+    const valueTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+    };
+
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-cancel/`,
+      valueOne
+    );
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-cancel/`,
+      valueTwo
+    );
+    loadFriends();
+    loadAllUser();
+  };
 
   return (
     <>
@@ -52,7 +169,7 @@ function UserMainFriends(props) {
             <div className="user-main-home-left-block-title">Bạn bè</div>
             <div className="user-main-friend-right">
               <div className="user-main-friend-search">
-                <i class="fas fa-search"></i>
+                <i className="fas fa-search"></i>
                 <input type="text" placeholder="Tìm kiếm" />
               </div>
               <div
@@ -71,8 +188,8 @@ function UserMainFriends(props) {
           </div>
           <div className="user-main-friend-list">
             {/* FRIEND LIST BLOCK */}
-            {friends !== null ? (
-              friends?.map((friend, friendIndex) => (
+            {trueFriend[0] !== null ? (
+              trueFriend?.map((friend, friendIndex) => (
                 <>
                   <div
                     key={friendIndex}
@@ -96,7 +213,7 @@ function UserMainFriends(props) {
                     </Link>
                     <div className="friend-list-block-left-dot">
                       <span>
-                        <i class="fas fa-ellipsis-h"></i>
+                        <i className="fas fa-ellipsis-h"></i>
                       </span>
                     </div>
                   </div>
@@ -115,7 +232,53 @@ function UserMainFriends(props) {
         <Modal.Header closeButton>
           <Modal.Title>Lời mời kết bạn</Modal.Title>
         </Modal.Header>
-        <Modal.Body></Modal.Body>
+        <Modal.Body>
+          <div className="card-container">
+            {pendingFriend?.map((friend, friendIndex) => (
+              <>
+                <div key={friendIndex} className="card">
+                  <Card style={{ width: "225px" }}>
+                    <Link
+                      className="nav-link active"
+                      aria-current="page"
+                      to={`/${friend.friendTwo}/`}
+                    >
+                      <div className="card-img-container">
+                        <Card.Img
+                          variant="top"
+                          height={"215px"}
+                          src={friend.avatarDefault}
+                        />
+                      </div>
+                    </Link>
+                    <Card.Body>
+                      <Card.Title>
+                        {friend.firstName} {friend.surName}
+                      </Card.Title>
+                      <Card.Text>1 bạn chung</Card.Text>
+                      <div className="card-button-container">
+                        <Button
+                          onClick={() => handleConfirm(friend.friendTwo)}
+                          variant="primary"
+                        >
+                          <div>Xác nhận</div>
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            handleCancelAddFriend(friend.friendTwo)
+                          }
+                          variant="secondary"
+                        >
+                          <div>Xóa</div>
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </div>
+              </>
+            ))}
+          </div>
+        </Modal.Body>
       </Modal>
       {/* MODAL ADD FRIEND END*/}
 
@@ -128,42 +291,96 @@ function UserMainFriends(props) {
           <div className="card-container">
             {listUser?.map((user, userIndex) => (
               <>
-                {friends.filter((e) => e.friendTwo === user.userId)[0] !==
+                {trueFriend.filter((e) => e.friendTwo === user.userId)[0] !==
                 undefined ? (
                   <></>
                 ) : (
                   <>
-                    <div key={userIndex} className="card">
-                      <Link
-                        className="nav-link active"
-                        aria-current="page"
-                        to={`/${user.userId}/`}
-                      >
-                        <Card style={{ width: "225px" }}>
-                          <div className="card-img-container">
-                            <Card.Img
-                              variant="top"
-                              height={"215px"}
-                              src={user.avatarDefault}
-                            />
-                          </div>
-                          <Card.Body>
-                            <Card.Title>
-                              {user.firstName} {user.surName}
-                            </Card.Title>
-                            <Card.Text>1 bạn chung</Card.Text>
-                            <div className="card-button-container">
-                              <Button variant="primary">
-                                <div onClick={handleAddFriend}>Kết bạn</div>
-                              </Button>
-                              <Button variant="secondary">
-                                <div>Xóa</div>
-                              </Button>
-                            </div>
-                          </Card.Body>
-                        </Card>
-                      </Link>
-                    </div>
+                    {rejectFriend.filter(
+                      (e) => e.friendTwo === user.userId
+                    )[0] ? (
+                      <></>
+                    ) : (
+                      <>
+                        <div key={userIndex} className="card">
+                          <Card style={{ width: "225px" }}>
+                            <Link
+                              className="nav-link active"
+                              aria-current="page"
+                              to={`/${user.userId}/`}
+                            >
+                              <div className="card-img-container">
+                                <Card.Img
+                                  variant="top"
+                                  height={"215px"}
+                                  src={user.avatarDefault}
+                                />
+                              </div>
+                            </Link>
+                            <Card.Body>
+                              <Card.Title>
+                                {user.firstName} {user.surName}
+                              </Card.Title>
+                              <Card.Text>1 bạn chung</Card.Text>
+                              {requestFriend.filter(
+                                (e) => e.friendTwo === user.userId
+                              )[0] ? (
+                                <>
+                                  <div className="card-button-container">
+                                    <Button
+                                      onClick={() =>
+                                        handleCancelAddFriend(user.userId)
+                                      }
+                                      variant="primary"
+                                    >
+                                      <i className="fas fa-user-times"></i> Hủy
+                                      lời mời
+                                    </Button>
+                                  </div>
+                                </>
+                              ) : pendingFriend.filter(
+                                  (e) => e.friendTwo === user.userId
+                                )[0] ? (
+                                <>
+                                  <div className="card-button-container">
+                                    <Button
+                                      onClick={() => handleConfirm(user.userId)}
+                                      variant="primary"
+                                    >
+                                      <div>Xác nhận</div>
+                                    </Button>
+                                    <Button variant="secondary">
+                                      <div>Xóa</div>
+                                    </Button>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="card-button-container">
+                                    <Button
+                                      variant="primary"
+                                      onClick={() =>
+                                        handleAddFriend(user.userId)
+                                      }
+                                    >
+                                      <div>Kết bạn</div>
+                                    </Button>
+                                    <Button
+                                      onClick={() =>
+                                        handleDisappear(user.userId)
+                                      }
+                                      variant="secondary"
+                                    >
+                                      <div>Xóa</div>
+                                    </Button>
+                                  </div>
+                                </>
+                              )}
+                            </Card.Body>
+                          </Card>
+                        </div>
+                      </>
+                    )}
                   </>
                 )}
               </>

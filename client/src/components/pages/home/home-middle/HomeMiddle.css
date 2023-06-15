@@ -42,7 +42,7 @@
 
 .story-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   overflow: hidden;
   margin-left: 10px;
@@ -314,7 +314,7 @@
 }
 
 .newfeed-basic-content .main-content {
-  height: 240px;
+  max-height: 240px;
   overflow: hidden;
 }
 
@@ -420,7 +420,8 @@
 
 .react-icon-hover {
   z-index: 5555;
-  display: none;
+  /* display: none; */
+  display: flex;
   width: 30%;
   padding: 5px;
   position: absolute;
@@ -469,13 +470,24 @@
   background-color: #f0f2f5;
   overflow: hidden;
   color: #65676b;
+  display: flex;
+  align-items: center;
 }
 
 .comments-block-input input {
+  width: 100%;
   padding-left: 5px;
   border: none;
   background-color: transparent;
   outline: none;
+}
+
+.comments-block-input i {
+  font-size: larger;
+}
+
+.comments-block-input i:hover {
+  color: #1876f2;
 }
 
 .comments-block {
@@ -483,14 +495,21 @@
   justify-self: baseline;
 }
 
-.comments-block-avatar {
+.comments-block-avatar,
+.reply-block-avatar {
   border-radius: 100%;
-  width: 35px;
-  height: 35px;
+  width: 42px;
+  height: 42px;
   overflow: hidden;
 }
 
-.comments-block-avatar img {
+.reply-block-avatar {
+  width: 35px;
+  height: 35px;
+}
+
+.comments-block-avatar img,
+.reply-block-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -506,16 +525,29 @@
 .comments-block-header-username {
   font-size: 15px;
   font-weight: 500;
+  color: black;
 }
 
 .comments-block-header-comments {
   overflow: hidden;
   width: 420px;
-  height: 125px;
+  max-height: 125px;
+}
+
+.comments-block-header-comments-active {
+  max-height: none;
+  width: 400px;
 }
 
 .comments-content {
   height: 10px;
+}
+
+.comments-content-active {
+  height: 10px;
+  font-weight: 400;
+  color: black;
+  font-size: medium;
 }
 
 .comments-content-show-more {
@@ -552,14 +584,14 @@
 .comments-content-show-more-res {
   padding: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-size: 17px;
   color: #65676b;
   font-weight: 500;
   cursor: pointer;
 }
 
-.comments-content-show-more-res:hover {
+.show-more-res:hover {
   text-decoration: underline;
 }
 
@@ -737,6 +769,11 @@
 
 .post-icon-active span:hover {
   background-color: #b9bdc358;
+}
+
+.comments-block-flex {
+  display: flex;
+  align-items: center;
 }
 
 @media only screen and (max-width: 1000px) {

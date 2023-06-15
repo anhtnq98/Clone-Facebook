@@ -209,16 +209,20 @@
 
 .react-comment-share .react:hover .react-icons-hover {
   display: flex;
+  width: 100%;
+  height: 100%;
 }
 
-.react-icons-hover {
+.react-comment-share .react {
+  display: flex;
+}
+
+.react-icons-hover,
+.reacts-icons-hover {
   z-index: 5555;
-  display: none;
-  width: 30%;
+  display: flex;
   padding: 5px;
-  position: absolute;
-  top: 1592px;
-  left: 550px;
+  width: 75%;
   background-color: white;
   justify-content: space-between;
   border-radius: 25px;
@@ -226,14 +230,54 @@
   box-shadow: 0px 2px 5px 0px rgba(178, 178, 178, 0.52);
 }
 
-.react-icons-hover img {
+.react-icons-hover-non,
+.reacts-icons-hover-non {
+  z-index: 5555;
+  display: none;
+  width: 0px;
+  height: 0px;
+  padding: 5px;
+  width: 75%;
+  background-color: white;
+  justify-content: space-between;
+  border-radius: 25px;
+  border: #bbbec5 1px solid;
+  box-shadow: 0px 2px 5px 0px rgba(178, 178, 178, 0.52);
+}
+
+.react-icons-hover img,
+.reacts-icons-hover img {
   width: 42px;
   cursor: pointer;
 }
 
-.react-icons-hover img:hover {
+.react-icons-hover img:hover,
+.reacts-icons-hover img:hover {
   border: #1876f24a 3px dashed;
   border-radius: 100%;
+}
+
+.react-like,
+.react-love-angry,
+.react-care-haha-wow-sad {
+  font-size: 15.5px;
+}
+
+.react-care {
+  font-size: 15px;
+}
+
+.react-like {
+  color: #247af4;
+}
+
+.react-love-angry {
+  color: #e92449;
+}
+
+.react-care-haha-wow-sad,
+.react-care {
+  color: rgb(247, 182, 52);
 }
 
 @media only screen and (max-width: 1000px) {
@@ -242,6 +286,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .user-main-home-left {
+    position: static;
   }
 
   .user-main-home-left-block {

@@ -12,6 +12,8 @@ require("dotenv").config();
 
 // ROUTES
 const usersRoutes = require(`./routes/users.routes`);
+const postsRoutes = require(`./routes/posts.routes`);
+const storiesRoutes = require(`./routes/stories.routes`);
 
 // parse application/x-www-form-urlencoded
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +24,8 @@ server.use(express.static("public"));
 
 // users route
 server.use(`/api/v1/users`, usersRoutes);
+server.use(`/api/v1/posts`, postsRoutes);
+server.use(`/api/v1/stories`, storiesRoutes);
 
 // register
 server.post("/api/v1/register", (req, res) => {

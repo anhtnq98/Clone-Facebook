@@ -38,21 +38,24 @@ function NavUser(props) {
         {/* NAV USER END */}
         {/* NAV USER OTHER */}
         <div className="nav-user-other">
-          <div className="nav-user-settings">
+          {/* <div className="nav-user-settings">
             <i className="fas fa-cog"></i>
             <div className="nav-user-settings-text">Cài đặt</div>
           </div>
           <div className="nav-user-settings">
-            <i class="fas fa-question-circle"></i>
+            <i className="fas fa-question-circle"></i>
             <div className="nav-user-settings-text">Trợ giúp</div>
           </div>
           <div className="nav-user-settings">
-            <i style={{ padding: "10px 12.5px" }} class="fa-solid fa-moon"></i>
+            <i
+              style={{ padding: "10px 12.5px" }}
+              className="fa-solid fa-moon"
+            ></i>
             <div className="nav-user-settings-text">Chế độ tối</div>
-          </div>
+          </div> */}
 
           <div className="nav-user-settings">
-            <i class="fa-solid fa-right-from-bracket"></i>
+            <i className="fa-solid fa-right-from-bracket"></i>
             <div onClick={handleLogOut} className="nav-user-settings-text">
               Đăng xuất
             </div>

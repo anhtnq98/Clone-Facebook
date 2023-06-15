@@ -18,7 +18,7 @@ function Home() {
 
   useEffect(() => {
     loadData();
-  });
+  }, [id]);
 
   return (
     <>

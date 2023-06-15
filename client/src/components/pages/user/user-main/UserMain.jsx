@@ -16,19 +16,6 @@ function UserMain() {
   };
   useEffect(() => {
     loadData();
-  });
-
-  // Lấy dữ liệu bạn bè
-  const [friends, setFfriends] = useState([]);
-  const loadFriends = async () => {
-    const result = await axios.get(
-      `http://localhost:5000/api/v1/users/friends/${id}`
-    );
-    setFfriends(result.data.data);
-  };
-
-  useEffect(() => {
-    loadFriends();
   }, []);
 
   return (
@@ -36,7 +23,7 @@ function UserMain() {
       <MyNavbar />
       <div className="user-main-container">
         {/* USER MAIN HEADER */}
-        <UserMainHeader user={user} friends={friends} />
+        <UserMainHeader />
         {/* USER MAIN HEADER */}
         <div className="user-main-bottom">
           <Outlet context={[user]}></Outlet>

@@ -8,8 +8,33 @@ import { storage } from "../../../../../firebase";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { ToastContainer, toast } from "react-toastify";
 
-function UserMainHeader(userProps) {
+function UserMainHeader() {
   const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
+  // Lấy dữ liệu từ users
+  const id = saveFlag.userId;
+  const [user, setUser] = useState([]);
+  const loadData = async () => {
+    const result = await axios.get(`http://localhost:5000/api/v1/users/${id}`);
+    setUser(result.data.data[0]);
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // Lấy dữ liệu bạn bè
+  const [friends, setFfriends] = useState([]);
+  const loadFriends = async () => {
+    const result = await axios.get(
+      `http://localhost:5000/api/v1/users/friends/${id}`
+    );
+    setFfriends(result.data.data);
+  };
+
+  useEffect(() => {
+    loadFriends();
+  }, []);
+
+  const trueFriend = friends.filter((e, i) => e.friendStatus === 2);
 
   const navLinkClassName = ({ isActive }) =>
     isActive ? "user-main-nav-active" : "user-main-nav";
@@ -161,6 +186,7 @@ function UserMainHeader(userProps) {
     inputRef.current.value = null;
     setBgImgPreview(null);
     handleCloseEditBackgroundIMG();
+    loadData();
   };
 
   // Hàm update avatar
@@ -185,6 +211,7 @@ function UserMainHeader(userProps) {
     setAvatarPreview(null);
     inputRef.current.value = null;
     handleCloseEditAvatar();
+    loadData();
   };
 
   // Lấy dữ liệu trả về từ firebase
@@ -215,45 +242,45 @@ function UserMainHeader(userProps) {
       <div className="user-main-header">
         <div
           style={{
-            backgroundImage: `url(${userProps.user.backgroundDefault})`,
+            backgroundImage: `url(${user.backgroundDefault})`,
           }}
           className="bg-avatar"
         >
           <div className="bg-avatar-optional">
-            <i class="fas fa-smile"></i> <span> Tạo với avatar</span>
+            <i className="fas fa-smile"></i> <span> Tạo với avatar</span>
           </div>
           <div
             onClick={handleShowEditBackgroundIMG}
             style={{ marginBottom: "15px" }}
             className="bg-avatar-optional"
           >
-            <i class="fas fa-camera"></i> <span> Chỉnh sửa ảnh bìa</span>
+            <i className="fas fa-camera"></i> <span> Chỉnh sửa ảnh bìa</span>
           </div>
         </div>
         <div className="user-main-avatar-info-container">
           <div className="user-main-avatar-info">
             <div className="user-main-avatar-info-left">
               <div onClick={handleShowEditAvatar} className="user-main-avatar">
-                <img src={userProps.user.avatarDefault} alt="" />
+                <img src={user.avatarDefault} alt="" />
               </div>
               <div className="user-main-info">
                 <div className="user-main-info-name">
-                  {userProps.user.firstName} {userProps.user.surName}
+                  {user.firstName} {user.surName}
                 </div>
-                {userProps.user.nickName !== null ? (
+                {user.nickName !== null ? (
                   <>
                     <div className="user-main-info-nickname">
-                      ({userProps.user.nickName})
+                      ({user.nickName})
                     </div>
                   </>
                 ) : (
                   <></>
                 )}
 
-                {userProps.friends !== null ? (
+                {trueFriend !== null ? (
                   <>
                     <div className="user-main-info-friend-quantity">
-                      {userProps.friends.length} bạn bè
+                      {trueFriend.length} bạn bè
                     </div>
                   </>
                 ) : (
@@ -265,24 +292,22 @@ function UserMainHeader(userProps) {
                 )}
 
                 <div className="user-main-info-friend">
-                  {userProps.friends.length === 1 ? (
+                  {trueFriend.length === 1 ? (
                     <>
                       <div className="user-main-info-friend-first">
-                        <img src={userProps.friends[0]?.avatarDefault} alt="" />
+                        <img src={friends[0]?.avatarDefault} alt="" />
                       </div>
                     </>
-                  ) : userProps.friends.length > 1 ? (
-                    userProps.friends
-                      ?.slice(0, 7)
-                      .map((friend, friendIndex) => (
-                        <div
-                          key={friendIndex}
-                          className="user-main-info-friend-avatar"
-                        >
-                          <img src={friend.avatarDefault} alt="" />
-                        </div>
-                      ))
-                  ) : userProps.friends.length >= 8 ? (
+                  ) : trueFriend.length > 1 ? (
+                    trueFriend?.slice(0, 7).map((friend, friendIndex) => (
+                      <div
+                        key={friendIndex}
+                        className="user-main-info-friend-avatar"
+                      >
+                        <img src={friend.avatarDefault} alt="" />
+                      </div>
+                    ))
+                  ) : trueFriend.length >= 8 ? (
                     <>
                       <div className="user-main-info-friend-last">
                         <img
@@ -299,16 +324,16 @@ function UserMainHeader(userProps) {
                   onClick={handleShowEditAvatar}
                   className="user-main-info-camera"
                 >
-                  <i class="fas fa-camera-retro"></i>
+                  <i className="fas fa-camera-retro"></i>
                 </div>
               </div>
             </div>
             <div className="user-main-avatar-info-right">
               <div className="user-main-add-news">
-                <i class="fas fa-plus"></i> Thêm vào tin
+                <i className="fas fa-plus"></i> Thêm vào tin
               </div>
               <div className="user-main-edit">
-                <i class="fas fa-pen"></i> Chỉnh sửa trang cá nhân
+                <i className="fas fa-pen"></i> Chỉnh sửa trang cá nhân
               </div>
             </div>
           </div>

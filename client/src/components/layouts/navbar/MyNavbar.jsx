@@ -18,7 +18,7 @@ function MyNavbar() {
 
   useEffect(() => {
     loadData();
-  });
+  }, [id]);
 
   // Trạng thái active của router
   const navLinkClassName = ({ isActive }) =>
@@ -101,7 +101,7 @@ function MyNavbar() {
               alt=""
             />
           </div>
-          <div className="right-icon-nofication">5</div>
+          {/* <div className="right-icon-nofication">5</div> */}
           {/* RIGHT AVATAR */}
           <div onClick={handleClick} className="right-avatar">
             <img src={user.avatarDefault} alt="" />

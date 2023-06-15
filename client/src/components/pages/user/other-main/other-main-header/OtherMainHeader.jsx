@@ -1,29 +1,125 @@
 import React, { useEffect, useState } from "react";
 import "../../user-main/user-main-header/UserMainHeader.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 
-function OtherMainHeader(userProps) {
+function OtherMainHeader() {
   const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
-  const user = userProps.user;
-  const friends = userProps.friends;
-  const friendIndex = friends.findIndex((e) => e.friendTwo === saveFlag.userId);
-  const [myFriends, setMyFriends] = useState([]);
-  const loadMyFriends = async () => {
-    const result = await axios.get(
-      `http://localhost:5000/api/v1/users//check-same-friends/${saveFlag.userId}`
-    );
-    setMyFriends(result.data.data);
+  // Lấy dữ liệu từ users
+  const { id } = useParams();
+  const [user, setUser] = useState([]);
+  const loadData = async () => {
+    const result = await axios.get(`http://localhost:5000/api/v1/users/${id}`);
+    setUser(result.data.data[0]);
   };
 
   useEffect(() => {
-    loadMyFriends();
-  }, []);
+    loadData();
+  }, [id]);
 
-  const checkfriends = friends.filter(
-    (e, i) => e.friendTwo !== myFriends[i]?.friendTwo
+  // Lấy dữ liệu bạn bè
+
+  const [friends, setFfriends] = useState([]);
+  const loadFriends = async () => {
+    const result = await axios.get(
+      `http://localhost:5000/api/v1/users/friends/${id}`
+    );
+    setFfriends(result.data.data);
+  };
+
+  useEffect(() => {
+    loadFriends();
+  }, [id]);
+
+  const trueFriend = friends.filter(
+    (e, i) => e.friendTwo !== saveFlag.userId && e.friendStatus === 2
   );
-  let sameFriend = checkfriends.length;
+
+  const trueFrienda = friends.filter(
+    (e, i) => e.friendTwo === saveFlag.userId && e.friendStatus === 2
+  )[0];
+
+  const requestFriend = friends.filter(
+    (e, i) => e.friendTwo === saveFlag.userId && e.friendStatus === 1
+  )[0];
+  const pendingFriend = friends.filter(
+    (e, i) => e.friendTwo === saveFlag.userId && e.friendStatus === 0
+  )[0];
+
+  const handleAddFriend = async (friendTwo) => {
+    const newFriendOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+      friendStatus: 1,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    const newFriendTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+      friendStatus: 0,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend",
+      newFriendOne
+    );
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend",
+      newFriendTwo
+    );
+    loadFriends();
+    loadData();
+  };
+
+  const handleCancelAddFriend = async (friendTwo) => {
+    console.log(friendTwo);
+    const valueOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+    };
+
+    const valueTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+    };
+
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-cancel/`,
+      valueOne
+    );
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-cancel/`,
+      valueTwo
+    );
+    loadFriends();
+    loadData();
+  };
+
+  const handleConfirm = async (friendTwo) => {
+    const valueOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+    };
+
+    const valueTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+    };
+
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-confirm/`,
+      valueOne
+    );
+    await axios.put(
+      `http://localhost:5000/api/v1/users/add-friend-confirm/`,
+      valueTwo
+    );
+    window.location.reload();
+  };
 
   const navLinkClassName = ({ isActive }) =>
     isActive ? "user-main-nav-active" : "user-main-nav";
@@ -57,30 +153,32 @@ function OtherMainHeader(userProps) {
                   <></>
                 )}
 
-                {friends !== null ? (
+                {trueFriend !== null ? (
                   <>
                     <div className="user-main-info-friend-quantity">
-                      {friends.length} bạn bè <i class="fas fa-circle"></i>{" "}
-                      {sameFriend} bạn chung
+                      {trueFriend.length} bạn bè{" "}
+                      <i className="fas fa-circle"></i> {trueFriend.length - 1}{" "}
+                      bạn chung
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="user-main-info-friend-quantity">
-                      0 bạn bè
+                      0 bạn bè <i className="fas fa-circle"></i>{" "}
+                      {trueFriend.length} bạn chung
                     </div>
                   </>
                 )}
 
                 <div className="user-main-info-friend">
-                  {friends.length === 1 ? (
+                  {trueFriend.length === 1 ? (
                     <>
                       <div className="user-main-info-friend-first">
-                        <img src={friends[0]?.avatarDefault} alt="" />
+                        <img src={trueFriend[0]?.avatarDefault} alt="" />
                       </div>
                     </>
-                  ) : friends.length > 1 ? (
-                    friends?.slice(0, 7).map((friend, friendIndex) => (
+                  ) : trueFriend.length > 1 ? (
+                    trueFriend?.slice(0, 7).map((friend, friendIndex) => (
                       <div
                         key={friendIndex}
                         className="user-main-info-friend-avatar"
@@ -88,7 +186,7 @@ function OtherMainHeader(userProps) {
                         <img src={friend.avatarDefault} alt="" />
                       </div>
                     ))
-                  ) : friends.length >= 8 ? (
+                  ) : trueFriend.length >= 8 ? (
                     <>
                       <div className="user-main-info-friend-last">
                         <img
@@ -104,24 +202,58 @@ function OtherMainHeader(userProps) {
               </div>
             </div>
 
-            {friends[friendIndex]?.friendTwo !== saveFlag.userId ? (
+            {requestFriend ? (
               <>
                 <div className="user-main-avatar-info-right">
+                  <div
+                    onClick={(e) => handleConfirm(user.userId)}
+                    className="user-main-add-news"
+                  >
+                    Chấp nhận lời mời
+                  </div>
+                  <div
+                    onClick={(e) => handleCancelAddFriend(user.userId)}
+                    className="user-main-edit"
+                  >
+                    Xóa lời mời
+                  </div>
+                </div>
+              </>
+            ) : pendingFriend ? (
+              <>
+                <div className="user-main-avatar-info-right">
+                  <div
+                    onClick={(e) => handleCancelAddFriend(user.userId)}
+                    className="user-main-add-news"
+                  >
+                    <i className="fas fa-user-times"></i> Hủy lời mời
+                  </div>
+                  <div className="user-main-edit">
+                    <i className="fa-solid fa-message"></i> Nhắn tin
+                  </div>
+                </div>
+              </>
+            ) : trueFrienda ? (
+              <>
+                <div className="user-main-avatar-info-right">
+                  <div className="user-main-edit">
+                    <i className="fa-solid fa-user"></i>
+                    <i className="fa-solid fa-check"></i> Bạn bè
+                  </div>
                   <div className="user-main-add-news">
-                    <i class="fa-solid fa-user"></i>
-                    <i class="fa-solid fa-plus"></i> Thêm bạn bè
+                    <i className="fa-solid fa-message"></i> Nhắn tin
                   </div>
                 </div>
               </>
             ) : (
               <>
-                <div className="user-main-avatar-info-right">
-                  <div className="user-main-edit">
-                    <i class="fa-solid fa-user"></i>
-                    <i class="fa-solid fa-check"></i> Bạn bè
-                  </div>
+                <div
+                  onClick={(e) => handleAddFriend(user.userId)}
+                  className="user-main-avatar-info-right"
+                >
                   <div className="user-main-add-news">
-                    <i class="fa-solid fa-message"></i> Nhắn tin
+                    <i className="fa-solid fa-user"></i>
+                    <i className="fa-solid fa-plus"></i> Thêm bạn bè
                   </div>
                 </div>
               </>

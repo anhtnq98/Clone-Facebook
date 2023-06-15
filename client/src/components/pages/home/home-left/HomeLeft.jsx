@@ -29,7 +29,7 @@ function HomeLeft(userProp) {
           >
             <div className="left-top-middle">
               <div className="left-top-icon">
-                <i class="fa-solid fa-user-group"></i>
+                <i className="fa-solid fa-user-group"></i>
               </div>
               <div className="left-top-text">Bạn bè</div>
             </div>
@@ -43,7 +43,7 @@ function HomeLeft(userProp) {
           >
             <div className="left-top-middle">
               <div className="left-top-icon">
-                <i class="fa-solid fa-store"></i>
+                <i className="fa-solid fa-store"></i>
               </div>
               <div className="left-top-text">Marketplace</div>
             </div>
@@ -70,7 +70,7 @@ function HomeLeft(userProp) {
           >
             <div className="left-top-middle">
               <div className="left-top-icon">
-                <i class="fa-sharp fa-solid fa-users"></i>
+                <i className="fa-sharp fa-solid fa-users"></i>
               </div>
               <div className="left-top-text">Nhóm</div>
             </div>
@@ -81,7 +81,7 @@ function HomeLeft(userProp) {
           <Link className="nav-link active" aria-current="page" to={"/watch/"}>
             <div className="left-top-middle">
               <div className="left-top-icon">
-                <i class="fa-solid fa-tv"></i>
+                <i className="fa-solid fa-tv"></i>
               </div>
               <div className="left-top-text">Watch</div>
             </div>

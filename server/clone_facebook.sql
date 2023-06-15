@@ -56,6 +56,14 @@ CREATE TABLE friendship (
         REFERENCES users (userId)
 );
 
+INSERT INTO friendship (friendOne, friendTwo, friendStatus,followStatus,relationship)
+VALUES ("deaec073-7bcc-47be-8a12-95d18487dc68", "5a799fab-4ce0-4b2e-a0c5-a7c2473b4975", 0, 0, 0);
+
+INSERT INTO friendship (friendOne, friendTwo, friendStatus,followStatus,relationship)
+VALUES ("5a799fab-4ce0-4b2e-a0c5-a7c2473b4975", "deaec073-7bcc-47be-8a12-95d18487dc68", 1, 0, 0);
+
+-- friendStatus: 0 là kết bạn, 1 là lời mời kết bạn, 2 là chấp nhận
+
 SELECT 
     f.friendShipId,
     f.friendOne,
@@ -77,5 +85,190 @@ WHERE
         
 drop table friendship;
 
+UPDATE friendship 
+SET 
+    friendStatus = 2,
+    followStatus = 1,
+    relationship = 1
+WHERE
+    friendOne = '0ae338bb-5fc6-4612-b03c-9f11dd1e3f09'
+        AND friendTwo = 'fb111ef8-ca0a-4867-b009-0aaefc22e897'
+        OR friendOne = 'fb111ef8-ca0a-4867-b009-0aaefc22e897'
+        AND friendTwo = '0ae338bb-5fc6-4612-b03c-9f11dd1e3f09';
+
+DELETE FROM friendship 
+WHERE
+    friendOne = '5a799fab-4ce0-4b2e-a0c5-a7c2473b4975'
+    AND friendTwo = 'fb111ef8-ca0a-4867-b009-0aaefc22e897'
+    OR friendOne = 'fb111ef8-ca0a-4867-b009-0aaefc22e897'
+    AND friendTwo = '5a799fab-4ce0-4b2e-a0c5-a7c2473b4975';
+
+CREATE TABLE posts (
+    postId INT NOT NULL AUTO_INCREMENT,
+    author VARCHAR(225) NOT NULL,
+    postImage LONGTEXT,
+    postContent VARCHAR(225) NOT NULL,
+    postStatus TINYINT,
+    createDateTime VARCHAR(50) NOT NULL,
+    updateDateTime VARCHAR(50),
+    friendTag VARCHAR(225),
+    PRIMARY KEY (postId),
+    FOREIGN KEY (author)
+        REFERENCES users (userId),
+    FOREIGN KEY (friendTag)
+        REFERENCES friendship (friendTwo)
+);
+
+SELECT 
+    p.postId,
+    p.author,
+    p.postImage,
+    p.postContent,
+    p.postStatus,
+    p.createDateTime,
+    p.updateDateTime,
+    p.friendTag,
+    u.avatarDefault,
+    u.firstName,
+    u.surName
+FROM
+    posts AS p
+        JOIN
+    users AS u ON p.author = u.userId
+WHERE
+    author = 'deaec073-7bcc-47be-8a12-95d18487dc68';
+    
+CREATE TABLE reacts (
+    reactId INT NOT NULL AUTO_INCREMENT,
+    react varchar(25),
+    author VARCHAR(36) NOT NULL,
+    postId INT NOT NULL,
+    PRIMARY KEY (commentId),
+    FOREIGN KEY (author)
+        REFERENCES users (userId),
+    FOREIGN KEY (postId)
+        REFERENCES posts (postId)
+);
+
+SELECT 
+    r.reactId,
+    r.react,
+    r.author,
+    r.postId,
+    u.firstName,
+    u.surName,
+    u.avatarDefault
+FROM
+    reacts AS r
+        JOIN
+    users AS u ON r.author = u.userId where author = "0ae338bb-5fc6-4612-b03c-9f11dd1e3f09";
+    
+    UPDATE reacts SET react = "love" WHERE reactId = "1";
+
+CREATE TABLE comments (
+    commentId INT NOT NULL AUTO_INCREMENT,
+    commentContent LONGTEXT NOT NULL,
+    commentLike INT,
+    commentCreateDateTime VARCHAR(50) NOT NULL,
+    commentUpdateDateTime VARCHAR(50),
+    userId varchar(36) NOT NULL,
+    postId INT NOT NULL,
+    PRIMARY KEY (commentId),
+    FOREIGN KEY (userId)
+        REFERENCES users (userId),
+    FOREIGN KEY (postId)
+        REFERENCES posts (postId)
+);
+
+SELECT 
+    c.commentId,
+    c.commentContent,
+    c.commentLike,
+    c.commentCreateDateTime,
+    c.commentUpdateDateTime,
+    c.userId,
+    c.postId,
+    u.firstName,
+    u.surName,
+    u.avatarDefault
+FROM
+    comments AS c
+        JOIN
+    users AS u ON c.userId = u.userId where postId = 1;
+    
+CREATE TABLE replies (
+    replyId INT NOT NULL AUTO_INCREMENT,
+    replyContent LONGTEXT NOT NULL,
+    replyLike INT,
+    replyCreateDateTime VARCHAR(50) NOT NULL,
+    replyUpdateDateTime VARCHAR(50),
+    userId VARCHAR(36) NOT NULL,
+    commentId INT NOT NULL,
+    PRIMARY KEY (replyId),
+    FOREIGN KEY (userId)
+        REFERENCES users (userId),
+    FOREIGN KEY (commentId)
+        REFERENCES comments (commentId)
+);
+
+SELECT 
+    r.replyId,
+    r.replyContent,
+    r.replyLike,
+    r.replyCreateDateTime,
+    r.replyUpdateDateTime,
+    r.userId,
+    r.commentId,
+    u.firstName,
+    u.surName,
+    u.avatarDefault
+FROM
+    comments AS r
+        JOIN
+    users AS u ON r.userId = u.userId where commentId = 1;
+
+-- Lấy hết ảnh qua từng user 
+SELECT 
+    p.postId,
+    p.author,
+    p.postImage,
+    p.postContent,
+    p.postStatus,
+    p.createDateTime,
+    p.updateDateTime,
+    p.friendTag,
+    u.avatarDefault,
+    u.firstName,
+    u.surName
+FROM
+    posts AS p
+        JOIN
+    users AS u ON p.author = u.userId
+WHERE
+    author = 'deaec073-7bcc-47be-8a12-95d18487dc68';
+    
+    SELECT * FROM posts JOIN users ON posts.author = 'deaec073-7bcc-47be-8a12-95d18487dc68';
+
+CREATE TABLE stories (
+    storyId INT NOT NULL AUTO_INCREMENT,
+    storyImage LONGTEXT NOT NULL,
+    author VARCHAR(36),
+    PRIMARY KEY (storyId),
+    FOREIGN KEY (author)
+        REFERENCES users (userId)
+);
+
+ SELECT    
+    s.storyId,
+    s.storyImage,
+    s.author,
+    u.avatarDefault,
+    u.firstName,
+    u.surName
+  FROM
+    stories AS s
+        JOIN
+    users AS u ON s.author = u.userId;
+    
 
 

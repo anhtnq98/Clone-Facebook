@@ -245,7 +245,7 @@ function Login() {
                     onClick={handleDeleteLoginAccount}
                     className="login-recently-choices-block-delete"
                   >
-                    <i class="fas fa-times-circle"></i>
+                    <i className="fas fa-times-circle"></i>
                   </div>
                 </div>
               </>
@@ -258,7 +258,7 @@ function Login() {
               className="login-recently-choices-block-add"
             >
               <div className="choices-block-img">
-                <i class="fa-solid fa-circle-plus"></i>
+                <i className="fa-solid fa-circle-plus"></i>
               </div>
               <div className="choices-block-title">Thêm tài khoản </div>
             </div>

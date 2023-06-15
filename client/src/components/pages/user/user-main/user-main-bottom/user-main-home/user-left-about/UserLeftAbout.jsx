@@ -19,7 +19,7 @@ function UserLeftAbout() {
           className="user-main-home-left-block-other"
         >
           <div className="user-main-home-left-block-small-other">
-            <i class="fas fa-graduation-cap"></i>{" "}
+            <i className="fas fa-graduation-cap"></i>{" "}
             <span>
               Từng học tại{" "}
               <a href="https://www.facebook.com/cbcjapanese">
@@ -33,7 +33,7 @@ function UserLeftAbout() {
         {/* BLOCK OTHER */}
         <div className="user-main-home-left-block-other">
           <div className="user-main-home-left-block-small-other">
-            <i class="fas fa-home"></i>{" "}
+            <i className="fas fa-home"></i>{" "}
             <span>
               Sống tại{" "}
               <a href="https://www.facebook.com/places/Hoat-dong-giai-tri-tai-Yokohama/105589566142652/">
@@ -46,7 +46,7 @@ function UserLeftAbout() {
         {/* BLOCK OTHER */}
         <div className="user-main-home-left-block-other">
           <div className="user-main-home-left-block-small-other">
-            <i class="fas fa-wifi"></i>
+            <i className="fas fa-wifi"></i>
             <span>
               Có <a href="/user-main-page/friends">313 người</a> theo dõi
             </span>

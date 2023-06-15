@@ -27,14 +27,14 @@ function HomeRight() {
                 <div>
                   <img
                     className="img-one"
-                    src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-1/337395012_1410825289729613_6916941906339086676_n.jpg?stp=dst-jpg_p480x480&_nc_cat=103&ccb=1-7&_nc_sid=f67be1&_nc_ohc=S43KRZBJIYcAX8OR3No&_nc_ht=scontent.fhan4-3.fna&oh=00_AfCxiAekzcMcAx1sgUC1FfKd9J5cTQtmyP4LrFKmjhhIRg&oe=6478957B"
+                    src="https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FB%E1%BA%A3y%20M%C3%A0u-Th%E1%BB%8F%2Fphotos%2Favatar%2F20230611122632_channels4_profile.jpg?alt=media&token=3d92e18b-2300-4d39-997a-2cd5d4bbf673"
                     alt=""
                   />
                 </div>
                 <div>
                   <img
                     className="img-two"
-                    src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-1/337395012_1410825289729613_6916941906339086676_n.jpg?stp=dst-jpg_p480x480&_nc_cat=103&ccb=1-7&_nc_sid=f67be1&_nc_ohc=S43KRZBJIYcAX8OR3No&_nc_ht=scontent.fhan4-3.fna&oh=00_AfCxiAekzcMcAx1sgUC1FfKd9J5cTQtmyP4LrFKmjhhIRg&oe=6478957B"
+                    src="https://firebasestorage.googleapis.com/v0/b/facebook-clone-1e97f.appspot.com/o/users%2FMartinez-David%20%2Fphotos%2Favatar%2F20230611113831_david-.png?alt=media&token=6ff233c0-2ff9-4047-838b-0b13b649f798"
                     alt=""
                   />
                 </div>
@@ -84,7 +84,7 @@ function HomeRight() {
                 />
               </div>
               <div className="home-right-small-icon">
-                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+                <i className="fa-sharp fa-solid fa-magnifying-glass"></i>
               </div>
               <div className="home-right-small-icon">
                 <div className="dot">
@@ -103,7 +103,7 @@ function HomeRight() {
                 />
               </div>
               <div className="home-right-avatar-circle">
-                <i class="fa-sharp fa-solid fa-circle"></i>
+                <i className="fa-sharp fa-solid fa-circle"></i>
               </div>
             </div>
             <div className="home-right-name">Anh Thân Ngọc</div>
@@ -119,7 +119,7 @@ function HomeRight() {
                 />
               </div>
               <div className="home-right-avatar-circle">
-                <i class="fa-sharp fa-solid fa-circle"></i>
+                <i className="fa-sharp fa-solid fa-circle"></i>
               </div>
             </div>
             <div className="home-right-name">Anh Thân Ngọc</div>
@@ -144,7 +144,7 @@ function HomeRight() {
               />
             </div>
             <div className="home-right-avatar-circle">
-              <i class="fa-sharp fa-solid fa-circle"></i>
+              <i className="fa-sharp fa-solid fa-circle"></i>
             </div>
           </div>
           <div className="home-right-name">Anh Thân Ngọc</div>
@@ -160,7 +160,7 @@ function HomeRight() {
               />
             </div>
             <div className="home-right-avatar-circle">
-              <i class="fa-sharp fa-solid fa-circle"></i>
+              <i className="fa-sharp fa-solid fa-circle"></i>
             </div>
           </div>
           <div className="home-right-name">Anh Thân Ngọc</div>

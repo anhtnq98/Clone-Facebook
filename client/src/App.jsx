@@ -13,8 +13,6 @@ import UserMainFriends from "./components/pages/user/user-main/user-main-bottom/
 import UserMainPhotos from "./components/pages/user/user-main/user-main-bottom/user-main-photos/UserMainPhotos";
 import UserMainVideos from "./components/pages/user/user-main/user-main-bottom/user-main-videos/UserMainVideos";
 import UserMainHome from "./components/pages/user/user-main/user-main-bottom/user-main-home/UserMainHome";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import OtherMain from "./components/pages/user/other-main/OtherMain";
 import OtherMainHome from "./components/pages/user/other-main/other-main-bottom/other-main-home/OtherMainHome";
 import OtherMainFriends from "./components/pages/user/other-main/other-main-bottom/other-main-friends/OtherMainFriends";
@@ -22,15 +20,6 @@ import OtherMainFriends from "./components/pages/user/other-main/other-main-bott
 function App() {
   const loginFlag = JSON.parse(localStorage.getItem("loginFlag"));
   const saveFlag = JSON.parse(localStorage.getItem("saveFlag"));
-  const [listUser, setListUser] = useState([]);
-  const loadAllUser = async () => {
-    const result = await axios.get(`http://localhost:5000/api/v1/users`);
-    setListUser(result.data.data);
-  };
-
-  useEffect(() => {
-    loadAllUser();
-  }, []);
 
   return (
     <>
@@ -39,15 +28,12 @@ function App() {
         <Route path="/marketplace/" element={<MarketPlace />} />
         <Route path="/groups/feed/" element={<Group />} />
         <Route path="/gaming/play/" element={<Gaming />} />
-        {saveFlag !== null ? (
+        {saveFlag !== null && loginFlag !== null ? (
           <>
             <Route path={`/${saveFlag.userId}/`} element={<UserMain />}>
               <Route path="" element={<UserMainHome />} />
               <Route path="about" element={<UserMainAbout />} />
-              <Route
-                path="friends"
-                element={<UserMainFriends listUser={listUser} />}
-              />
+              <Route path="friends" element={<UserMainFriends />} />
               <Route path="photos" element={<UserMainPhotos />} />
               <Route path="videos" element={<UserMainVideos />} />
             </Route>
@@ -61,7 +47,9 @@ function App() {
             </Route>
           </>
         ) : (
-          <></>
+          <>
+            <Route path="/" element={<Login />} />
+          </>
         )}
 
         {loginFlag !== null ? (

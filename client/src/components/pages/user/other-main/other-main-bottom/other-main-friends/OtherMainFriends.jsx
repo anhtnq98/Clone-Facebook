@@ -40,6 +40,34 @@ function OtherMainFriends() {
   );
   let sameFriend = checkfriends.length;
 
+  const handleAddFriend = async (friendTwo) => {
+    const newFriendOne = {
+      friendOne: saveFlag.userId,
+      friendTwo: friendTwo,
+      friendStatus: 1,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    const newFriendTwo = {
+      friendOne: friendTwo,
+      friendTwo: saveFlag.userId,
+      friendStatus: 0,
+      followStatus: 0,
+      relationship: 0,
+    };
+
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend",
+      newFriendOne
+    );
+    await axios.post(
+      "http://localhost:5000/api/v1/users/add-friend",
+      newFriendTwo
+    );
+    loadFriends();
+  };
+
   return (
     <>
       <div className="user-main-friend-container">
@@ -48,7 +76,7 @@ function OtherMainFriends() {
             <div className="user-main-home-left-block-title">Bạn bè</div>
             <div className="user-main-friend-right">
               <div className="user-main-friend-search">
-                <i class="fas fa-search"></i>
+                <i className="fas fa-search"></i>
                 <input type="text" placeholder="Tìm kiếm" />
               </div>
               <div className="user-main-friend-request">
@@ -61,41 +89,47 @@ function OtherMainFriends() {
             {friends !== null ? (
               newfriends?.map((friend, friendIndex) => (
                 <>
-                  <Link to={`/${friend.friendTwo}`}>
-                    <div
-                      key={friendIndex}
-                      className="user-main-friend-list-block"
+                  <div
+                    key={friendIndex}
+                    className="user-main-friend-list-block"
+                  >
+                    <Link
+                      to={`/${friend.friendTwo}`}
+                      className="user-main-friend-list-block-left"
                     >
-                      <div className="user-main-friend-list-block-left">
-                        <div className="friend-list-block-left-img">
-                          <img src={friend.avatarDefault} alt="" />
+                      <div className="friend-list-block-left-img">
+                        <img src={friend.avatarDefault} alt="" />
+                      </div>
+                      <div className="friend-list-block-left-text">
+                        <div className="friend-list-block-left-text-name">
+                          {friend.firstName} {friend.surName}
                         </div>
-                        <div className="friend-list-block-left-text">
-                          <div className="friend-list-block-left-text-name">
-                            {friend.firstName} {friend.surName}
-                          </div>
-                          <div className="friend-list-block-left-text-same">
-                            1 bạn chung
-                          </div>
+                        <div className="friend-list-block-left-text-same">
+                          1 bạn chung
                         </div>
                       </div>
-                      {myFriends.filter(
-                        (e) => e.friendTwo === friend.friendTwo
-                      )[0] === undefined ? (
-                        <>
-                          <div className="user-main-add-news">Thêm bạn bè</div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="friend-list-block-left-dot">
-                            <span>
-                              <i class="fas fa-ellipsis-h"></i>
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </Link>
+                    </Link>
+                    {myFriends.filter(
+                      (e) => e.friendTwo === friend.friendTwo
+                    )[0] === undefined ? (
+                      <>
+                        <div
+                          onClick={(e) => handleAddFriend(friend.friendTwo)}
+                          className="user-main-add-news"
+                        >
+                          Thêm bạn bè
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="friend-list-block-left-dot">
+                          <span>
+                            <i className="fas fa-ellipsis-h"></i>
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </>
               ))
             ) : (
