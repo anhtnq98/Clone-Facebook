@@ -17,9 +17,7 @@ function HomeMiddle(userProp) {
 
   const [posts, setPosts] = useState([]);
   const loadPost = async () => {
-    const result = await axios.get(
-      `http://localhost:5000/api/v1/posts`
-    );
+    const result = await axios.get(`http://localhost:5000/api/v1/posts`);
     setPosts(result.data.data);
   };
 
@@ -295,9 +293,12 @@ function HomeMiddle(userProp) {
         </div>
         {/* NEWFEED INPUT END */}
         {/* NEWFEED BLOCK */}
-        {posts?.map((post, postIndex) => (
-          <UserHomePost post={post} />
-        ))}
+        
+        {posts
+          ?.sort((a, b) => b.postId - a.postId)
+          .map((post, postIndex) => (
+            <UserHomePost post={post} />
+          ))}
 
         {/* NEWFEED BLOCK END*/}
 

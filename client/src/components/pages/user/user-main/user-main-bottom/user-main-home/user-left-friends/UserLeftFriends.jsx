@@ -19,7 +19,7 @@ function UserLeftFriends() {
   useEffect(() => {
     loadFriends();
   }, []);
-
+  const myFriend = friends.filter((e) => e.friendStatus === 2);
   return (
     <>
       <div className="user-main-home-left-friends">
@@ -36,13 +36,13 @@ function UserLeftFriends() {
             </a>
           </div>
           <div className="user-main-home-friend-quantity">
-            {friends.length} người bạn
+            {myFriend.length} người bạn
           </div>
 
           <div className="user-main-home-friends">
             {/* BLOCK FRIEND */}
-            {friends
-              ?.slice(friends.length - 9, friends.length)
+            {myFriend
+              ?.slice(myFriend.length - 9, myFriend.length)
               .map((friend, i) => (
                 <>
                   <div className="user-main-home-friend-block">

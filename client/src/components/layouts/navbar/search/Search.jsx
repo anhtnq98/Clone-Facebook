@@ -7,11 +7,12 @@ function Search() {
 
   // Hàm tìm kiếm trong danh sách users
   const [searchValue, setSearchValue] = useState("");
+  const searchV = searchValue.trim();
   const [searchResults, setSearchResults] = useState("");
   const loadSearch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/users/friend/search-user?searchValue=${searchValue}`
+        `http://localhost:5000/api/v1/users/friend/search-user?searchValue=${searchV}`
       );
       setSearchResults(response.data.data);
       console.log(response.data.data);
@@ -71,12 +72,12 @@ function Search() {
                             </div>
                           </div>
                         </div>
-                        <div>
+                        {/* <div>
                           <i
                             id="search-delete"
                             className="fa-solid fa-xmark"
                           ></i>
-                        </div>
+                        </div> */}
                       </div>
                       {/* search block end */}
                     </>

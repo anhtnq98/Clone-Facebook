@@ -35,6 +35,11 @@ function UserMainHome() {
   const handleCloseCreatePost = () => setShowCreatePost(false);
   const handleShowCreatePost = () => setShowCreatePost(true);
 
+  // EDIT POST MODAL
+  const [showEditPost, setShowEditPost] = useState(false);
+  const handleCloseEditPost = () => setShowEditPost(false);
+  const handleShowEditPost = () => setShowEditPost(true);
+
   const [postIconStyle, setPostIconStyle] = useState("post-icon");
   const [postIconActive, setPostIconActive] = useState(false);
   const postIcon = [
@@ -315,9 +320,11 @@ function UserMainHome() {
         </div>
         {/* NEWFEED INPUT END */}
         {/* NEWFEED BLOCK */}
-        {posts?.map((post, postIndex) => (
-          <UserHomePost post={post} />
-        ))}
+        {posts
+          .sort((a, b) => b.postId - a.postId)
+          ?.map((post, postIndex) => (
+            <UserHomePost post={post} />
+          ))}
 
         {/* NEWFEED BLOCK END*/}
       </div>
@@ -410,6 +417,95 @@ function UserMainHome() {
         </Modal.Body>
       </Modal>
       {/* CREATE POSTS MODAL END*/}
+      {/* Chỉnh sửa bài viết */}
+      <Modal
+        className="create-post-modal-container"
+        show={showEditPost}
+        onHide={handleCloseEditPost}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <div className="create-post-modal-title">Chỉnh sửa bài viết</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="create-post-modal-input">
+            <div className="create-post-modal-head">
+              <div className="create-post-modal-avatar">
+                <img src={saveFlag.avatarDefault} alt="" />
+              </div>
+              <div>
+                <div className="create-post-modal-username">
+                  {saveFlag.firstName} {saveFlag.surName}
+                </div>
+                <div style={{ padding: "3px 0 0 13px" }}>
+                  {" "}
+                  <Form.Select
+                    onChange={(e) => setPostStatus(e.target.value)}
+                    size="sm"
+                    value={postStatus}
+                  >
+                    <option value="">Chọn quyền riêng tư</option>
+                    <option value={0}>🌏 Công khai</option>
+                    <option value={1}>👥 Bạn bè</option>
+                    <option value={2}>🔒 Riêng tư</option>
+                  </Form.Select>
+                </div>
+              </div>
+            </div>
+            <div className="create-post-modal-middle">
+              <div className="modal-middle-input">
+                <textarea
+                  name="postContent"
+                  type="text"
+                  onChange={(e) => setPostContent([e.target.value])}
+                  value={postContent}
+                  placeholder={`${saveFlag.surName} ơi, bạn đang nghĩ gì thế?`}
+                ></textarea>
+
+                <i onClick={handleShowIcons} className="far fa-smile"></i>
+
+                <div className={postIconStyle}>
+                  <p>Mặt cười & hình người</p>{" "}
+                  {postIcon?.map((icon, iconIndex) => (
+                    <>
+                      <span
+                        key={iconIndex}
+                        onClick={() => handleAddPostIcon(icon)}
+                      >
+                        {icon}
+                      </span>
+                    </>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="Dragger">
+              <input
+                type="file"
+                name="postImage"
+                onChange={handlePostImageChange}
+              />
+              <div className="img-upload">
+                <img src={postImgPreview} alt="" />
+                <Button variant="primary" onClick={handleUploadPostImage}>
+                  Tải ảnh lên
+                </Button>{" "}
+              </div>
+            </div>
+            <div className="create-post-modal-bottom">
+              <div>Thêm vào bài viết của bạn</div>
+              <div>
+                <i className="fas fa-user-tag"></i>
+              </div>
+            </div>
+          </div>
+          <div onClick={handleAddPost} className="create-post-modal-submit">
+            Đăng
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* Chỉnh sửa bài viết*/}
       <ToastContainer autoClose={2500} />
     </div>
   );

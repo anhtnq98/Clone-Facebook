@@ -236,6 +236,57 @@ router.post("/", (req, res) => {
   });
 });
 
+router.patch("/:id", (req, res) => {
+  const { postImage, postContent, postStatus, createDateTime } = req.body;
+
+  const newPost = [postImage, postContent, postStatus, createDateTime];
+
+  // Câu lệnh query
+  const query = `UPDATE posts SET
+        postImage = ?,
+        postContent = ?,
+        postStatus = ?,
+        createDateTime = ?
+        WHERE postId = ${id}
+        `;
+  // Kêt nối
+  connection.query(query, newPost, (err) => {
+    if (err) {
+      res.status(500).json({
+        status: 500,
+        message: err,
+      });
+    } else {
+      return res.status(200).json({
+        status: 200,
+        message: "Cập nhật bài viết mới thành công",
+      });
+    }
+  });
+});
+
+// Xóa post
+router.put("/:id", (req, res) => {
+  // Câu lệnh query
+  const { id } = req.params;
+  const query = `DELETE FROM posts WHERE postId = ${id}
+        `;
+  // Kêt nối
+  connection.query(query, (err) => {
+    if (err) {
+      res.status(500).json({
+        status: 500,
+        message: err,
+      });
+    } else {
+      return res.status(200).json({
+        status: 200,
+        message: "Xóa bài viết thành công",
+      });
+    }
+  });
+});
+
 router.post("/react-comment/comment", (req, res) => {
   const {
     commentContent,

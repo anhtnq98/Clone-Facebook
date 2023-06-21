@@ -13,6 +13,7 @@ function UserMainFriends() {
 
   const id = saveFlag.userId;
   const [friends, setFfriends] = useState([]);
+
   const loadFriends = async () => {
     const result = await axios.get(
       `http://localhost:5000/api/v1/users/friends/${id}`

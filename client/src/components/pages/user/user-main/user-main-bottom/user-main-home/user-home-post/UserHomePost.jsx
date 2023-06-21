@@ -142,6 +142,16 @@ function UserHomePost(props) {
     loadComment();
   };
 
+  const handleDeletePost = async () => {
+    await axios.put(`http://localhost:5000/api/v1/posts/${post.postId}`);
+    setTimeout(() => {
+      window.location.href();
+    }, 1500);
+    toast.success("Xóa bài viết thành công!", {
+      position: toast.POSITION.BOTTOM_LEFT,
+    });
+  };
+
   return (
     <>
       <div
@@ -186,7 +196,10 @@ function UserHomePost(props) {
                 <div>...</div>
               </div>
             </div>
-            <div className="newfeed-basic-right-small-icon">
+            <div
+              onClick={handleDeletePost}
+              className="newfeed-basic-right-small-icon"
+            >
               <div className="newfeed-basic-delete">X</div>
             </div>
           </div>
@@ -491,7 +504,7 @@ function UserHomePost(props) {
           {/* COMMENT END*/}
         </div>
       </div>
-      <ToastContainer autoClose={1000} />
+      <ToastContainer autoClose={1500} />
     </>
   );
 }
